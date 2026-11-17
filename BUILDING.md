@@ -1,6 +1,6 @@
 # Build QLIC Lite
 
-C17 and CMake 3.25 or newer. The full CLI uses libpng, libtiff 4.7+, turbojpeg 3.2+, libwebp/libwebpdecoder, and libjxl 0.12+. The two codec libraries along with the wasm decoder build independently of said dependencies.
+C17 and CMake 3.25 or newer. The full CLI uses libpng, libtiff 4.7+, turbojpeg 3.2+, libwebp/libwebpdecoder, and libjxl 0.12+. The two codec libraries build independently of said dependencies.
 
 ## Windows x64
 

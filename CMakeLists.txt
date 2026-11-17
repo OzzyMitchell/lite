@@ -5,19 +5,6 @@ set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-if(EMSCRIPTEN)
-    add_executable(qlic_lite_web qlic_lite_decoder.c)
-    target_compile_definitions(qlic_lite_web PRIVATE QLIC_WASM QLI_MAX_CPU_TIER=0)
-    set_target_properties(qlic_lite_web PROPERTIES OUTPUT_NAME qlic_lite SUFFIX ".mjs")
-    target_link_options(qlic_lite_web PRIVATE
-        --no-entry -sMODULARIZE=1 -sEXPORT_ES6=1 -sENVIRONMENT=web,node
-        -sALLOW_MEMORY_GROWTH=1 -sMAXIMUM_MEMORY=536870912 -sSTACK_SIZE=1048576
-        -sEXPORTED_RUNTIME_METHODS=HEAPU8
-        -sEXPORTED_FUNCTIONS=_qlic_lite_limits_default,_qlic_lite_decode,_qlic_lite_image_free,_qlic_lite_wasm_decode,_qlic_lite_wasm_samples,_qlic_lite_wasm_size,_qlic_lite_wasm_width,_qlic_lite_wasm_height,_qlic_lite_wasm_bits,_qlic_lite_wasm_channels,_qlic_lite_wasm_free,_malloc,_free
-    )
-    return()
-endif()
-
 add_executable(qlic_lite_full qlic_lite_full.c)
 set_target_properties(qlic_lite_full PROPERTIES OUTPUT_NAME qlic_lite)
 add_library(qlic_lite SHARED qlic_lite.c)
