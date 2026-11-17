@@ -1,0 +1,3790 @@
+{
+  "cpu": "AMD Ryzen 9 9950X3D",
+  "logical_cpu": 2,
+  "workers": 1,
+  "calls": 1,
+  "qlic_lite_dlls": {
+    "AUTO": {
+      "qlic_lite.dll": "4d76be555f649e50fbd026882a46da76790e165031949bc503ff33b2fab5b409",
+      "qlic_lite_decoder.dll": "f85e3ccb53845a114d8e67bcf59a05a73f89c3ef268494033c96c58dd4837dd0"
+    },
+    "SSE42": {
+      "qlic_lite.dll": "6b8e06aba4c45f5a6b968ca8467f0c9a64cecadffbc2eabc30e5607a8314d116",
+      "qlic_lite_decoder.dll": "81494e6e6774374f002f7b8b2786d9b213cb5b6658a1781f800265a2b4ea323a"
+    },
+    "SCALAR": {
+      "qlic_lite.dll": "31518dc94b64f239db18264dff92d3276405176af21203fbefd476e20543ed1f",
+      "qlic_lite_decoder.dll": "e52dae726d0076db300a442acaca630fe2bef56106fffab6c936c27c1adc282f"
+    }
+  },
+  "comparison_dlls": {
+    "fnbli-memory.dll": "3fe62421aa8ec3ac1e6c021b0919d74c7beeaead488c18be374f7ecbcab53585",
+    "l1c-memory.dll": "22d5a21cb013b1543bae18875346bd250981ad78668c01faf309eaa5201ecc6f"
+  },
+  "imagecodecs": [
+    "imagecodecs-2026.11.11",
+    "libjxl-0.13.0",
+    "libpng-1.6.59",
+    "openjph-0.33.0"
+  ],
+  "corpora": {
+    "rgba": {
+      "manifest_sha256": "aa4b1b4744165d5d7a42b2575ee693830baafc5191728a79f91bb2d1355ca3d9",
+      "observations_sha256": "852836981464c0865c7f1f74d94c0129688a661e6e052bad9b94d270a74144f7",
+      "totals": {
+        "lite": {
+          "images": 3200,
+          "pixels": 3799220858,
+          "bytes": 2267678123,
+          "encode_ns": 50207900400,
+          "decode_ns": 15330900300,
+          "encode_mpps": 75.66978160273756,
+          "decode_mpps": 247.81459559814633
+        },
+        "lite-sse42": {
+          "images": 3200,
+          "pixels": 3799220858,
+          "bytes": 2267678123,
+          "encode_ns": 53617562400,
+          "decode_ns": 18673611900,
+          "encode_mpps": 70.85776913274968,
+          "decode_mpps": 203.45399049446883
+        },
+        "lite-scalar": {
+          "images": 3200,
+          "pixels": 3799220858,
+          "bytes": 2267678123,
+          "encode_ns": 152631383000,
+          "decode_ns": 59723922500,
+          "encode_mpps": 24.891478956198675,
+          "decode_mpps": 63.61304982940462
+        },
+        "png1": {
+          "images": 3200,
+          "pixels": 3799220858,
+          "bytes": 6074600306,
+          "encode_ns": 89044760500,
+          "decode_ns": 30694182200,
+          "encode_mpps": 42.66641671746649,
+          "decode_mpps": 123.77657867685427
+        },
+        "htj2k6": {
+          "images": 3200,
+          "pixels": 3799220858,
+          "bytes": 2994258912,
+          "encode_ns": 52702464400,
+          "decode_ns": 27821589700,
+          "encode_mpps": 72.08810633910319,
+          "decode_mpps": 136.55656987853573
+        },
+        "jxl7": {
+          "images": 3200,
+          "pixels": 3799220858,
+          "bytes": 2270198470,
+          "encode_ns": 2073242495700,
+          "decode_ns": 359415172000,
+          "encode_mpps": 1.8325019219313508,
+          "decode_mpps": 10.570563387346375
+        }
+      },
+      "categories": {
+        "aerial-resisc": {
+          "lite": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 5557949,
+            "encode_ns": 231697600,
+            "decode_ns": 65565300,
+            "encode_mpps": 28.285144084358233,
+            "decode_mpps": 99.95531172739238
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 5557949,
+            "encode_ns": 223667800,
+            "decode_ns": 73523300,
+            "encode_mpps": 29.300596688481757,
+            "decode_mpps": 89.13636901499252
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 5557949,
+            "encode_ns": 425704000,
+            "decode_ns": 144542500,
+            "encode_mpps": 15.394734369421005,
+            "decode_mpps": 45.34029783627653
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 16003870,
+            "encode_ns": 203882000,
+            "decode_ns": 92449900,
+            "encode_mpps": 32.144083342325466,
+            "decode_mpps": 70.88812427055086
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 7024500,
+            "encode_ns": 152603100,
+            "decode_ns": 84221800,
+            "encode_mpps": 42.945392328203035,
+            "decode_mpps": 77.81358270661515
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 5225338,
+            "encode_ns": 5398328200,
+            "decode_ns": 757139600,
+            "encode_mpps": 1.214005476732593,
+            "decode_mpps": 8.655735349201125
+          }
+        },
+        "aerial-ucmerced": {
+          "lite": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 8553579,
+            "encode_ns": 225648700,
+            "decode_ns": 65542800,
+            "encode_mpps": 29.01991015237402,
+            "decode_mpps": 99.90883819427916
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 8553579,
+            "encode_ns": 220416700,
+            "decode_ns": 73893100,
+            "encode_mpps": 29.708751650850413,
+            "decode_mpps": 88.61862609634728
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 8553579,
+            "encode_ns": 444258100,
+            "decode_ns": 150441900,
+            "encode_mpps": 14.739866307446054,
+            "decode_mpps": 43.52713572482134
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 19249107,
+            "encode_ns": 225842500,
+            "decode_ns": 93036400,
+            "encode_mpps": 28.995007582718046,
+            "decode_mpps": 70.38433344368441
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 9725404,
+            "encode_ns": 154349700,
+            "decode_ns": 81054700,
+            "encode_mpps": 42.42512295132417,
+            "decode_mpps": 80.78871428800551
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 8126562,
+            "encode_ns": 5951233700,
+            "decode_ns": 856032200,
+            "encode_mpps": 1.1003273153262323,
+            "decode_mpps": 7.649601264999144
+          }
+        },
+        "android-ui": {
+          "lite": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 37215852,
+            "encode_ns": 2247491900,
+            "decode_ns": 593587600,
+            "encode_mpps": 74.27159136813796,
+            "decode_mpps": 281.21342157417035
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 37215852,
+            "encode_ns": 2393929600,
+            "decode_ns": 667984200,
+            "encode_mpps": 69.7283662811137,
+            "decode_mpps": 249.89333580045755
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 37215852,
+            "encode_ns": 5747561200,
+            "decode_ns": 1981214300,
+            "encode_mpps": 29.04271815322297,
+            "decode_mpps": 84.2537831470326
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 98880794,
+            "encode_ns": 2576260400,
+            "decode_ns": 796409600,
+            "encode_mpps": 64.79345022731398,
+            "decode_mpps": 209.59666985430613
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 55363284,
+            "encode_ns": 1627464600,
+            "decode_ns": 1081210000,
+            "encode_mpps": 102.5673922492692,
+            "decode_mpps": 154.3870293467504
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 35925990,
+            "encode_ns": 67396917900,
+            "decode_ns": 14572985800,
+            "encode_mpps": 2.4767423377976163,
+            "decode_mpps": 11.454399413468172
+          }
+        },
+        "bsds-photos": {
+          "lite": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 15850756,
+            "encode_ns": 355767100,
+            "decode_ns": 144880900,
+            "encode_mpps": 43.39945992757622,
+            "decode_mpps": 106.570983476773
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 15850756,
+            "encode_ns": 349576900,
+            "decode_ns": 162596200,
+            "encode_mpps": 44.167964187565026,
+            "decode_mpps": 94.95978380798567
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 15850756,
+            "encode_ns": 854504700,
+            "decode_ns": 349034000,
+            "encode_mpps": 18.069063868226824,
+            "decode_mpps": 44.23666462293072
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 40687999,
+            "encode_ns": 488468300,
+            "decode_ns": 195239800,
+            "encode_mpps": 31.60921599211249,
+            "decode_mpps": 79.08274849697654
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 19245542,
+            "encode_ns": 333758100,
+            "decode_ns": 166785400,
+            "encode_mpps": 46.261349162761896,
+            "decode_mpps": 92.5746498194686
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 15247389,
+            "encode_ns": 13099108800,
+            "decode_ns": 1957634800,
+            "encode_mpps": 1.1787137763143092,
+            "decode_mpps": 7.887119701795248
+          }
+        },
+        "charts-and-plots": {
+          "lite": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 1975468,
+            "encode_ns": 836522700,
+            "decode_ns": 59668000,
+            "encode_mpps": 44.635988957621834,
+            "decode_mpps": 625.7796138633773
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 1975468,
+            "encode_ns": 855908100,
+            "decode_ns": 61004400,
+            "encode_mpps": 43.62503170609087,
+            "decode_mpps": 612.0708998039486
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 1975468,
+            "encode_ns": 1752341000,
+            "decode_ns": 107962700,
+            "encode_mpps": 21.308077594486463,
+            "decode_mpps": 345.85109486887603
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 5021498,
+            "encode_ns": 429165100,
+            "decode_ns": 76709600,
+            "encode_mpps": 87.00385469368315,
+            "decode_mpps": 486.75808503759635
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 6474589,
+            "encode_ns": 319337500,
+            "decode_ns": 238508000,
+            "encode_mpps": 116.92650565624143,
+            "decode_mpps": 156.5524762272125
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 1669874,
+            "encode_ns": 8128921800,
+            "decode_ns": 1799802000,
+            "encode_mpps": 4.593354311761248,
+            "decode_mpps": 20.746180968795457
+          }
+        },
+        "coco-photos": {
+          "lite": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 33774129,
+            "encode_ns": 504564500,
+            "decode_ns": 178306300,
+            "encode_mpps": 54.19469265079093,
+            "decode_mpps": 153.358114659998
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 33774129,
+            "encode_ns": 530116000,
+            "decode_ns": 218405300,
+            "encode_mpps": 51.582517788559485,
+            "decode_mpps": 125.20171442725977
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 33774129,
+            "encode_ns": 1407234400,
+            "decode_ns": 609443200,
+            "encode_mpps": 19.431530383282272,
+            "decode_mpps": 44.86836180959932
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 77646311,
+            "encode_ns": 919840200,
+            "decode_ns": 337608100,
+            "encode_mpps": 29.727683134527062,
+            "decode_mpps": 80.99544412589627
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 39743250,
+            "encode_ns": 555431200,
+            "decode_ns": 262195200,
+            "encode_mpps": 49.23151238173153,
+            "decode_mpps": 104.29145155975395
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 33174560,
+            "encode_ns": 25369469000,
+            "decode_ns": 3764976800,
+            "encode_mpps": 1.077859296148453,
+            "decode_mpps": 7.262918061009034
+          }
+        },
+        "commons-built-environments": {
+          "lite": {
+            "images": 100,
+            "pixels": 228459298,
+            "bytes": 182297629,
+            "encode_ns": 2504048000,
+            "decode_ns": 1215618400,
+            "encode_mpps": 91.23598988517791,
+            "decode_mpps": 187.93668967169302
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 228459298,
+            "bytes": 182297629,
+            "encode_ns": 2778319500,
+            "decode_ns": 1544763500,
+            "encode_mpps": 82.22931091978442,
+            "decode_mpps": 147.8927343894389
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 228459298,
+            "bytes": 182297629,
+            "encode_ns": 9831621500,
+            "decode_ns": 5300287000,
+            "encode_mpps": 23.237194190195382,
+            "decode_mpps": 43.103193845918156
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 228459298,
+            "bytes": 528687676,
+            "encode_ns": 6658452700,
+            "decode_ns": 2636826200,
+            "encode_mpps": 34.31116932016353,
+            "decode_mpps": 86.64177335616583
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 228459298,
+            "bytes": 237920614,
+            "encode_ns": 4021813600,
+            "decode_ns": 1929932700,
+            "encode_mpps": 56.80504387373895,
+            "decode_mpps": 118.37682111920276
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 228459298,
+            "bytes": 182039792,
+            "encode_ns": 157449648200,
+            "decode_ns": 24920207800,
+            "encode_mpps": 1.4509991010573753,
+            "decode_mpps": 9.167632141494423
+          }
+        },
+        "commons-landscapes": {
+          "lite": {
+            "images": 100,
+            "pixels": 227055369,
+            "bytes": 198440714,
+            "encode_ns": 2526879800,
+            "decode_ns": 1179790600,
+            "encode_mpps": 89.85602283100289,
+            "decode_mpps": 192.45395665976656
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 227055369,
+            "bytes": 198440714,
+            "encode_ns": 2796786300,
+            "decode_ns": 1485529300,
+            "encode_mpps": 81.1843825894027,
+            "decode_mpps": 152.84475977686876
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 227055369,
+            "bytes": 198440714,
+            "encode_ns": 9761431600,
+            "decode_ns": 5068208600,
+            "encode_mpps": 23.260457922995638,
+            "decode_mpps": 44.79992575680488
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 227055369,
+            "bytes": 531243232,
+            "encode_ns": 6764546300,
+            "decode_ns": 2429222200,
+            "encode_mpps": 33.565498546443536,
+            "decode_mpps": 93.4683410187837
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 227055369,
+            "bytes": 250824221,
+            "encode_ns": 3944371200,
+            "decode_ns": 1888753200,
+            "encode_mpps": 57.56440190010514,
+            "decode_mpps": 120.21441922639761
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 227055369,
+            "bytes": 199710401,
+            "encode_ns": 162479745700,
+            "decode_ns": 25060078700,
+            "encode_mpps": 1.397437988481539,
+            "decode_mpps": 9.060441178901804
+          }
+        },
+        "commons-plants-fungi-and-wildlife": {
+          "lite": {
+            "images": 100,
+            "pixels": 309047688,
+            "bytes": 267211369,
+            "encode_ns": 3174332400,
+            "decode_ns": 1607220300,
+            "encode_mpps": 97.35832580104088,
+            "decode_mpps": 192.28707352688366
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 309047688,
+            "bytes": 267211369,
+            "encode_ns": 3539296400,
+            "decode_ns": 2058228400,
+            "encode_mpps": 87.31896204002581,
+            "decode_mpps": 150.15228047577227
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 309047688,
+            "bytes": 267211369,
+            "encode_ns": 12998229500,
+            "decode_ns": 7210217500,
+            "encode_mpps": 23.77613720391689,
+            "decode_mpps": 42.862463996405104
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 309047688,
+            "bytes": 743818970,
+            "encode_ns": 9490389000,
+            "decode_ns": 3564586400,
+            "encode_mpps": 32.56428034720179,
+            "decode_mpps": 86.69945214401312
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 309047688,
+            "bytes": 335805285,
+            "encode_ns": 5521151700,
+            "decode_ns": 2598806700,
+            "encode_mpps": 55.97522125682582,
+            "decode_mpps": 118.91907466607655
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 309047688,
+            "bytes": 266471444,
+            "encode_ns": 216808279800,
+            "decode_ns": 34656733000,
+            "encode_mpps": 1.4254422768590225,
+            "decode_mpps": 8.917392415493982
+          }
+        },
+        "desktop-ui": {
+          "lite": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 18363846,
+            "encode_ns": 1976643100,
+            "decode_ns": 257964700,
+            "encode_mpps": 56.234444650124246,
+            "decode_mpps": 430.8939440163712
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 18363846,
+            "encode_ns": 2054558200,
+            "decode_ns": 282148200,
+            "encode_mpps": 54.101863359237036,
+            "decode_mpps": 393.96114169787364
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 18363846,
+            "encode_ns": 4854342700,
+            "decode_ns": 635942900,
+            "encode_mpps": 22.89814169897811,
+            "decode_mpps": 174.78837644071504
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 43696645,
+            "encode_ns": 1549844300,
+            "decode_ns": 440183200,
+            "encode_mpps": 71.72038313784165,
+            "decode_mpps": 252.52082996352428
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 42927810,
+            "encode_ns": 1219015400,
+            "decode_ns": 806005800,
+            "encode_mpps": 91.18459619131966,
+            "decode_mpps": 137.90896666004141
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 20830284,
+            "encode_ns": 38854443900,
+            "decode_ns": 8395126900,
+            "encode_mpps": 2.8608163145014154,
+            "decode_mpps": 13.240470135120887
+          }
+        },
+        "div2k-training-photos": {
+          "lite": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 297422120,
+            "encode_ns": 2812947200,
+            "decode_ns": 1436674700,
+            "encode_mpps": 99.19241996437046,
+            "decode_mpps": 194.21448710692823
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 297422120,
+            "encode_ns": 3181183800,
+            "decode_ns": 1856278000,
+            "encode_mpps": 87.71044288607278,
+            "decode_mpps": 150.31317507399214
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 297422120,
+            "encode_ns": 11912111400,
+            "decode_ns": 6486377400,
+            "encode_mpps": 23.423474699875623,
+            "decode_mpps": 43.016775434620875
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 739510782,
+            "encode_ns": 8847622900,
+            "decode_ns": 3218423100,
+            "encode_mpps": 31.53649778631501,
+            "decode_mpps": 86.69557461230004
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 352556529,
+            "encode_ns": 5072460500,
+            "decode_ns": 2328345100,
+            "encode_mpps": 55.007434754790104,
+            "decode_mpps": 119.83749316198875
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 299807571,
+            "encode_ns": 218203743400,
+            "decode_ns": 34569037700,
+            "encode_mpps": 1.2787270999678,
+            "decode_mpps": 8.071472582530118
+          }
+        },
+        "div2k-validation-photos": {
+          "lite": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 300131366,
+            "encode_ns": 2827069900,
+            "decode_ns": 1445016400,
+            "encode_mpps": 100.28152469806282,
+            "decode_mpps": 196.1935380110565
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 300131366,
+            "encode_ns": 3173167100,
+            "decode_ns": 1864431400,
+            "encode_mpps": 89.34382308451389,
+            "decode_mpps": 152.05862763306817
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 300131366,
+            "encode_ns": 12105482800,
+            "decode_ns": 6685034000,
+            "encode_mpps": 23.419378201090833,
+            "decode_mpps": 42.40859208793852
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 748793588,
+            "encode_ns": 8971791700,
+            "decode_ns": 3301508700,
+            "encode_mpps": 31.599360471108575,
+            "decode_mpps": 85.87070511127231
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 355232340,
+            "encode_ns": 5198842100,
+            "decode_ns": 2363945300,
+            "encode_mpps": 54.53192740745098,
+            "decode_mpps": 119.92785112244349
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 302070196,
+            "encode_ns": 220639422200,
+            "decode_ns": 34944683100,
+            "encode_mpps": 1.2849148949593288,
+            "decode_mpps": 8.11290459234412
+          }
+        },
+        "document-scans": {
+          "lite": {
+            "images": 100,
+            "pixels": 599462086,
+            "bytes": 57444351,
+            "encode_ns": 5606807700,
+            "decode_ns": 856057900,
+            "encode_mpps": 106.91682648577371,
+            "decode_mpps": 700.2588095968742
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 599462086,
+            "bytes": 57444351,
+            "encode_ns": 5757809100,
+            "decode_ns": 894528300,
+            "encode_mpps": 104.11287967154034,
+            "decode_mpps": 670.1432319134007
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 599462086,
+            "bytes": 57444351,
+            "encode_ns": 8785152300,
+            "decode_ns": 2486788000,
+            "encode_mpps": 68.23582170567492,
+            "decode_mpps": 241.0587818503226
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 599462086,
+            "bytes": 196693783,
+            "encode_ns": 6981868700,
+            "decode_ns": 842913500,
+            "encode_mpps": 85.85983377201006,
+            "decode_mpps": 711.1786511901873
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 599462086,
+            "bytes": 120963156,
+            "encode_ns": 3289235700,
+            "decode_ns": 2366027500,
+            "encode_mpps": 182.2496593965583,
+            "decode_mpps": 253.362264808841
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 599462086,
+            "bytes": 55367786,
+            "encode_ns": 134926449800,
+            "decode_ns": 30482762700,
+            "encode_mpps": 4.442880449967935,
+            "decode_mpps": 19.66560878683086
+          }
+        },
+        "emoji": {
+          "lite": {
+            "images": 100,
+            "pixels": 38192400,
+            "bytes": 1478702,
+            "encode_ns": 1323436800,
+            "decode_ns": 56791100,
+            "encode_mpps": 28.858499325392795,
+            "decode_mpps": 672.506783633351
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 38192400,
+            "bytes": 1478702,
+            "encode_ns": 1355534600,
+            "decode_ns": 56234200,
+            "encode_mpps": 28.175156871687378,
+            "decode_mpps": 679.1667703995078
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 38192400,
+            "bytes": 1478702,
+            "encode_ns": 3242536300,
+            "decode_ns": 69058400,
+            "encode_mpps": 11.77855742123843,
+            "decode_mpps": 553.0449590491526
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 38192400,
+            "bytes": 3952913,
+            "encode_ns": 443428900,
+            "decode_ns": 57135900,
+            "encode_mpps": 86.12970422090216,
+            "decode_mpps": 668.4483835907022
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 38192400,
+            "bytes": 7705572,
+            "encode_ns": 430098600,
+            "decode_ns": 336095600,
+            "encode_mpps": 88.79917302683617,
+            "decode_mpps": 113.63552513034982
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 38192400,
+            "bytes": 1000686,
+            "encode_ns": 7373227800,
+            "decode_ns": 1729928600,
+            "encode_mpps": 5.1798752237113845,
+            "decode_mpps": 22.07744296498711
+          }
+        },
+        "game-screenshots": {
+          "lite": {
+            "images": 100,
+            "pixels": 63441173,
+            "bytes": 28522262,
+            "encode_ns": 1904272500,
+            "decode_ns": 256378600,
+            "encode_mpps": 33.31517574296746,
+            "decode_mpps": 247.45112501589446
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 63441173,
+            "bytes": 28522262,
+            "encode_ns": 1948913200,
+            "decode_ns": 297406500,
+            "encode_mpps": 32.552077229504114,
+            "decode_mpps": 213.31468209336379
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 63441173,
+            "bytes": 28522262,
+            "encode_ns": 5259684600,
+            "decode_ns": 787187300,
+            "encode_mpps": 12.061782754045746,
+            "decode_mpps": 80.59222119056037
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 63441173,
+            "bytes": 71537787,
+            "encode_ns": 1261498000,
+            "decode_ns": 456994400,
+            "encode_mpps": 50.2903476660288,
+            "decode_mpps": 138.82264859263046
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 63441173,
+            "bytes": 46757607,
+            "encode_ns": 999338500,
+            "decode_ns": 554759300,
+            "encode_mpps": 63.483167115046605,
+            "decode_mpps": 114.35801617025618
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 63441173,
+            "bytes": 27545696,
+            "encode_ns": 32846697600,
+            "decode_ns": 6443168200,
+            "encode_mpps": 1.9314323093472874,
+            "decode_mpps": 9.846269883191937
+          }
+        },
+        "industrial-fabrics": {
+          "lite": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 131897736,
+            "encode_ns": 1109354700,
+            "decode_ns": 555319600,
+            "encode_mpps": 94.52125636642636,
+            "decode_mpps": 188.82387727715715
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 131897736,
+            "encode_ns": 1259433200,
+            "decode_ns": 719006500,
+            "encode_mpps": 83.257770241407,
+            "decode_mpps": 145.83679007074346
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 131897736,
+            "encode_ns": 4764914700,
+            "decode_ns": 2551077300,
+            "encode_mpps": 22.0061861757987,
+            "decode_mpps": 41.103262531480325
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 310800406,
+            "encode_ns": 3734270400,
+            "decode_ns": 1523354600,
+            "encode_mpps": 28.079809110770338,
+            "decode_mpps": 68.83334976636431
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 155397274,
+            "encode_ns": 1933229800,
+            "decode_ns": 873676200,
+            "encode_mpps": 54.23959427896259,
+            "decode_mpps": 120.01883535341813
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 134478807,
+            "encode_ns": 82286231100,
+            "decode_ns": 12680935700,
+            "encode_mpps": 1.2743031075584164,
+            "decode_mpps": 8.26891662261169
+          }
+        },
+        "industrial-grayscale": {
+          "lite": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 32816667,
+            "encode_ns": 1193368100,
+            "decode_ns": 237065700,
+            "encode_mpps": 87.86693728448078,
+            "decode_mpps": 442.314514499567
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 32816667,
+            "encode_ns": 1247897200,
+            "decode_ns": 275041200,
+            "encode_mpps": 84.02743431109549,
+            "decode_mpps": 381.2432464663476
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 32816667,
+            "encode_ns": 2517846500,
+            "decode_ns": 905812500,
+            "encode_mpps": 41.645747665713536,
+            "decode_mpps": 115.76082246601808
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 155960597,
+            "encode_ns": 2492463800,
+            "decode_ns": 921827700,
+            "encode_mpps": 42.069858747798065,
+            "decode_mpps": 113.74967361037208
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 39648606,
+            "encode_ns": 866398700,
+            "decode_ns": 509221400,
+            "encode_mpps": 121.02695906630515,
+            "decode_mpps": 205.91750464532717
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 33527179,
+            "encode_ns": 28674134500,
+            "decode_ns": 4805623800,
+            "encode_mpps": 3.656870619756631,
+            "decode_mpps": 21.81976874677539
+          }
+        },
+        "industrial-objects": {
+          "lite": {
+            "images": 100,
+            "pixels": 87307520,
+            "bytes": 84940883,
+            "encode_ns": 1300195700,
+            "decode_ns": 477921300,
+            "encode_mpps": 67.14952218346822,
+            "decode_mpps": 182.68179300650547
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 87307520,
+            "bytes": 84940883,
+            "encode_ns": 1428306900,
+            "decode_ns": 604728900,
+            "encode_mpps": 61.12658280933881,
+            "decode_mpps": 144.37464457213804
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 87307520,
+            "bytes": 84940883,
+            "encode_ns": 4904635600,
+            "decode_ns": 1989252900,
+            "encode_mpps": 17.80102073230476,
+            "decode_mpps": 43.88960297607207
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 87307520,
+            "bytes": 204135222,
+            "encode_ns": 2631579300,
+            "decode_ns": 1106083000,
+            "encode_mpps": 33.176853154301675,
+            "decode_mpps": 78.9339678848694
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 87307520,
+            "bytes": 102685058,
+            "encode_ns": 1555670100,
+            "decode_ns": 727119000,
+            "encode_mpps": 56.12213026399363,
+            "decode_mpps": 120.07322047697832
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 87307520,
+            "bytes": 79785138,
+            "encode_ns": 62432474400,
+            "decode_ns": 10800969700,
+            "encode_mpps": 1.39843119849179,
+            "decode_mpps": 8.083303853727134
+          }
+        },
+        "large-icons": {
+          "lite": {
+            "images": 100,
+            "pixels": 26214400,
+            "bytes": 3680413,
+            "encode_ns": 969167200,
+            "decode_ns": 69111500,
+            "encode_mpps": 27.048377204676346,
+            "decode_mpps": 379.305904227227
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 26214400,
+            "bytes": 3680413,
+            "encode_ns": 997503300,
+            "decode_ns": 69598500,
+            "encode_mpps": 26.28001330922915,
+            "decode_mpps": 376.65179565651556
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 26214400,
+            "bytes": 3680413,
+            "encode_ns": 2291668200,
+            "decode_ns": 112136800,
+            "encode_mpps": 11.439003255357822,
+            "decode_mpps": 233.77160753650898
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 26214400,
+            "bytes": 8795661,
+            "encode_ns": 378404200,
+            "decode_ns": 102668300,
+            "encode_mpps": 69.27618668080322,
+            "decode_mpps": 255.33100285092868
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 26214400,
+            "bytes": 8660244,
+            "encode_ns": 366714600,
+            "decode_ns": 261370000,
+            "encode_mpps": 71.48447321159288,
+            "decode_mpps": 100.29613192026629
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 26214400,
+            "bytes": 2929505,
+            "encode_ns": 12388650300,
+            "decode_ns": 2414430000,
+            "encode_mpps": 2.1160012886956703,
+            "decode_mpps": 10.857386629556459
+          }
+        },
+        "math-text": {
+          "lite": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 189319,
+            "encode_ns": 56651500,
+            "decode_ns": 6372100,
+            "encode_mpps": 69.50389663115716,
+            "decode_mpps": 617.9281555531144
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 189319,
+            "encode_ns": 57009100,
+            "decode_ns": 6289100,
+            "encode_mpps": 69.06792073546153,
+            "decode_mpps": 626.083223354693
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 189319,
+            "encode_ns": 75173200,
+            "decode_ns": 9509500,
+            "encode_mpps": 52.37903933848765,
+            "decode_mpps": 414.05962458594036
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 445685,
+            "encode_ns": 44455900,
+            "decode_ns": 4991800,
+            "encode_mpps": 88.57092084515216,
+            "decode_mpps": 788.7936215393245
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 328131,
+            "encode_ns": 59823100,
+            "decode_ns": 34201900,
+            "encode_mpps": 65.81905651830147,
+            "decode_mpps": 115.12518310386265
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 135010,
+            "encode_ns": 739212500,
+            "decode_ns": 154208200,
+            "encode_mpps": 5.326614471481475,
+            "decode_mpps": 25.533661634076527
+          }
+        },
+        "microscopy": {
+          "lite": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 5518414,
+            "encode_ns": 347656900,
+            "decode_ns": 55930200,
+            "encode_mpps": 44.266893595380964,
+            "decode_mpps": 275.15887659976187
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 5518414,
+            "encode_ns": 348467200,
+            "decode_ns": 61495700,
+            "encode_mpps": 44.163958616478105,
+            "decode_mpps": 250.2563756490291
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 5518414,
+            "encode_ns": 640133600,
+            "decode_ns": 135404400,
+            "encode_mpps": 24.041373550771276,
+            "decode_mpps": 113.65724452085752
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 21683488,
+            "encode_ns": 354308800,
+            "decode_ns": 127440400,
+            "encode_mpps": 43.43581361795135,
+            "decode_mpps": 120.75990816099133
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 6536609,
+            "encode_ns": 181219700,
+            "decode_ns": 101400900,
+            "encode_mpps": 84.9228367556066,
+            "decode_mpps": 151.77075351402206
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 5098351,
+            "encode_ns": 4849177100,
+            "decode_ns": 902830100,
+            "encode_mpps": 3.1736706419734597,
+            "decode_mpps": 17.04605440159782
+          }
+        },
+        "mobile-and-web-ui": {
+          "lite": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 46961845,
+            "encode_ns": 5133702900,
+            "decode_ns": 657658200,
+            "encode_mpps": 65.20254999563765,
+            "decode_mpps": 508.9733846548253
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 46961845,
+            "encode_ns": 5275711100,
+            "decode_ns": 711080900,
+            "encode_mpps": 63.447469669065086,
+            "decode_mpps": 470.73479262345535
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 46961845,
+            "encode_ns": 14038484500,
+            "decode_ns": 1648634600,
+            "encode_mpps": 23.843778863737036,
+            "decode_mpps": 203.03499635395255
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 129169561,
+            "encode_ns": 4480872700,
+            "decode_ns": 1192669200,
+            "encode_mpps": 74.70208202969033,
+            "decode_mpps": 280.65663136098425
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 123023300,
+            "encode_ns": 3159408900,
+            "decode_ns": 2122318200,
+            "encode_mpps": 105.94719790781117,
+            "decode_mpps": 157.71929016110778
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 57961628,
+            "encode_ns": 105063708600,
+            "decode_ns": 23350055600,
+            "encode_mpps": 3.1859766275183627,
+            "decode_mpps": 14.335320040950995
+          }
+        },
+        "paintings": {
+          "lite": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 164864178,
+            "encode_ns": 2748814700,
+            "decode_ns": 1569985000,
+            "encode_mpps": 98.0817542921318,
+            "decode_mpps": 171.72684325009476
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 164864178,
+            "encode_ns": 3094174900,
+            "decode_ns": 1917324000,
+            "encode_mpps": 87.13423665869696,
+            "decode_mpps": 140.61711426968003
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 164864178,
+            "encode_ns": 10050305800,
+            "decode_ns": 6138556900,
+            "encode_mpps": 26.825906929120507,
+            "decode_mpps": 43.92051297919874
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 541571589,
+            "encode_ns": 7387194600,
+            "decode_ns": 3008300100,
+            "encode_mpps": 36.496746410335525,
+            "decode_mpps": 89.62156667813827
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 225248479,
+            "encode_ns": 4358074000,
+            "decode_ns": 2258717200,
+            "encode_mpps": 61.86415558799598,
+            "decode_mpps": 119.36357858345436
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 168395663,
+            "encode_ns": 170780943600,
+            "decode_ns": 29162149800,
+            "encode_mpps": 1.5786806321405054,
+            "decode_mpps": 9.245154072968928
+          }
+        },
+        "pixel-art": {
+          "lite": {
+            "images": 100,
+            "pixels": 37188,
+            "bytes": 14781,
+            "encode_ns": 6017800,
+            "decode_ns": 706700,
+            "encode_mpps": 6.17966698793579,
+            "decode_mpps": 52.62204612989953
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 37188,
+            "bytes": 14781,
+            "encode_ns": 5695600,
+            "decode_ns": 644900,
+            "encode_mpps": 6.529250649624271,
+            "decode_mpps": 57.66475422546131
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 37188,
+            "bytes": 14781,
+            "encode_ns": 5568200,
+            "decode_ns": 598200,
+            "encode_mpps": 6.678639416687619,
+            "decode_mpps": 62.16649949849548
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 37188,
+            "bytes": 24670,
+            "encode_ns": 2629300,
+            "decode_ns": 1239100,
+            "encode_mpps": 14.143688434184003,
+            "decode_mpps": 30.012105560487452
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 37188,
+            "bytes": 114879,
+            "encode_ns": 17061000,
+            "decode_ns": 13366900,
+            "encode_mpps": 2.1797081062071393,
+            "decode_mpps": 2.7820960731358806
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 37188,
+            "bytes": 8529,
+            "encode_ns": 32264000,
+            "decode_ns": 11934100,
+            "encode_mpps": 1.1526159186709646,
+            "decode_mpps": 3.116112651980459
+          }
+        },
+        "pk01-textures": {
+          "lite": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 11866992,
+            "encode_ns": 478375900,
+            "decode_ns": 80070700,
+            "encode_mpps": 27.12537985295664,
+            "decode_mpps": 162.05838090587443
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 11866992,
+            "encode_ns": 475834900,
+            "decode_ns": 90147900,
+            "encode_mpps": 27.270231754753592,
+            "decode_mpps": 143.9426542382019
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 11866992,
+            "encode_ns": 1036771000,
+            "decode_ns": 196280200,
+            "encode_mpps": 12.515905633934592,
+            "decode_mpps": 66.11022405724061
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 25390539,
+            "encode_ns": 333795300,
+            "decode_ns": 120357900,
+            "encode_mpps": 38.8745078196128,
+            "decode_mpps": 107.81284818030225
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 15699344,
+            "encode_ns": 233255200,
+            "decode_ns": 124790400,
+            "encode_mpps": 55.630605448453025,
+            "decode_mpps": 103.98338333717979
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 11042496,
+            "encode_ns": 8965152900,
+            "decode_ns": 1470503700,
+            "encode_mpps": 1.4473961732431804,
+            "decode_mpps": 8.82427429458355
+          }
+        },
+        "pk02-textures": {
+          "lite": {
+            "images": 100,
+            "pixels": 30441472,
+            "bytes": 29827825,
+            "encode_ns": 471912700,
+            "decode_ns": 155680400,
+            "encode_mpps": 64.50657505085157,
+            "decode_mpps": 195.5382437352422
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 30441472,
+            "bytes": 29827825,
+            "encode_ns": 495869500,
+            "decode_ns": 190005500,
+            "encode_mpps": 61.39008751294443,
+            "decode_mpps": 160.21363592106545
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 30441472,
+            "bytes": 29827825,
+            "encode_ns": 1277105400,
+            "decode_ns": 557248000,
+            "encode_mpps": 23.836303565860735,
+            "decode_mpps": 54.62823015964167
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 30441472,
+            "bytes": 70380755,
+            "encode_ns": 852546500,
+            "decode_ns": 304747500,
+            "encode_mpps": 35.70652392567443,
+            "decode_mpps": 99.89080140115998
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 30441472,
+            "bytes": 37966446,
+            "encode_ns": 502964800,
+            "decode_ns": 244752900,
+            "encode_mpps": 60.524060530677296,
+            "decode_mpps": 124.37634855399058
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 30441472,
+            "bytes": 28343234,
+            "encode_ns": 21924942800,
+            "decode_ns": 3364358500,
+            "encode_mpps": 1.3884402015406854,
+            "decode_mpps": 9.048224795306446
+          }
+        },
+        "plant-textures": {
+          "lite": {
+            "images": 100,
+            "pixels": 66118598,
+            "bytes": 35458868,
+            "encode_ns": 1959744100,
+            "decode_ns": 299823800,
+            "encode_mpps": 33.73838349609013,
+            "decode_mpps": 220.52484826087854
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 66118598,
+            "bytes": 35458868,
+            "encode_ns": 2013939800,
+            "decode_ns": 331416400,
+            "encode_mpps": 32.83047388010307,
+            "decode_mpps": 199.50309640681633
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 66118598,
+            "bytes": 35458868,
+            "encode_ns": 5250616200,
+            "decode_ns": 836294500,
+            "encode_mpps": 12.592540662179802,
+            "decode_mpps": 79.0613808891485
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 66118598,
+            "bytes": 81640849,
+            "encode_ns": 1382792400,
+            "decode_ns": 411328400,
+            "encode_mpps": 47.8152743680107,
+            "decode_mpps": 160.74406240852807
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 66118598,
+            "bytes": 52956630,
+            "encode_ns": 1008428100,
+            "decode_ns": 580733100,
+            "encode_mpps": 65.56600118540925,
+            "decode_mpps": 113.85367563860231
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 66118598,
+            "bytes": 33291883,
+            "encode_ns": 38485112000,
+            "decode_ns": 7316385400,
+            "encode_mpps": 1.7180305464617072,
+            "decode_mpps": 9.03705783459685
+          }
+        },
+        "pngimg-cutouts": {
+          "lite": {
+            "images": 100,
+            "pixels": 171511154,
+            "bytes": 84142190,
+            "encode_ns": 3192332700,
+            "decode_ns": 788166300,
+            "encode_mpps": 53.72596471539448,
+            "decode_mpps": 217.6078246430988
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 171511154,
+            "bytes": 84142190,
+            "encode_ns": 3382208400,
+            "decode_ns": 903857200,
+            "encode_mpps": 50.70981255915514,
+            "decode_mpps": 189.75470240210512
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 171511154,
+            "bytes": 84142190,
+            "encode_ns": 8657190600,
+            "decode_ns": 2663241300,
+            "encode_mpps": 19.81141018195903,
+            "decode_mpps": 64.39940459018865
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 171511154,
+            "bytes": 202985269,
+            "encode_ns": 3619878700,
+            "decode_ns": 1204492500,
+            "encode_mpps": 47.38035945790117,
+            "decode_mpps": 142.39287832842462
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 171511154,
+            "bytes": 117780987,
+            "encode_ns": 2354087700,
+            "decode_ns": 1358494000,
+            "encode_mpps": 72.85673936446803,
+            "decode_mpps": 126.25094700455062
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 171511154,
+            "bytes": 80644058,
+            "encode_ns": 89055712000,
+            "decode_ns": 17250699400,
+            "encode_mpps": 1.9258860565844447,
+            "decode_mpps": 9.942272485485429
+          }
+        },
+        "quake-textures": {
+          "lite": {
+            "images": 100,
+            "pixels": 4375808,
+            "bytes": 4207862,
+            "encode_ns": 165492300,
+            "decode_ns": 9752600,
+            "encode_mpps": 26.441157685282036,
+            "decode_mpps": 448.6811722002338
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 4375808,
+            "bytes": 4207862,
+            "encode_ns": 162875200,
+            "decode_ns": 10091800,
+            "encode_mpps": 26.866017662603024,
+            "decode_mpps": 433.600348798034
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 4375808,
+            "bytes": 4207862,
+            "encode_ns": 277326200,
+            "decode_ns": 15892100,
+            "encode_mpps": 15.778559688915076,
+            "decode_mpps": 275.3448568785749
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 4375808,
+            "bytes": 12892704,
+            "encode_ns": 147634400,
+            "decode_ns": 53542700,
+            "encode_mpps": 29.639487815847797,
+            "decode_mpps": 81.72557603557534
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 4375808,
+            "bytes": 7753845,
+            "encode_ns": 109973900,
+            "decode_ns": 58002300,
+            "encode_mpps": 39.78951369370369,
+            "decode_mpps": 75.44197385276101
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 4375808,
+            "bytes": 3989885,
+            "encode_ns": 3760000400,
+            "decode_ns": 300584900,
+            "encode_mpps": 1.1637785995980212,
+            "decode_mpps": 14.557644113193977
+          }
+        },
+        "surface-textures": {
+          "lite": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 22437516,
+            "encode_ns": 454088800,
+            "decode_ns": 163486300,
+            "encode_mpps": 50.55753191886697,
+            "decode_mpps": 140.42527722506412
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 22437516,
+            "encode_ns": 466323200,
+            "decode_ns": 192064900,
+            "encode_mpps": 49.2311105259185,
+            "decode_mpps": 119.5304764170861
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 22437516,
+            "encode_ns": 1216660000,
+            "decode_ns": 492479500,
+            "encode_mpps": 18.86937106504693,
+            "decode_mpps": 46.61637489479258
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 57927957,
+            "encode_ns": 711246700,
+            "decode_ns": 274705800,
+            "encode_mpps": 32.27798315268106,
+            "decode_mpps": 83.57162098506839
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 27892559,
+            "encode_ns": 452756000,
+            "decode_ns": 228867100,
+            "encode_mpps": 50.7063606004117,
+            "decode_mpps": 100.30978240210148
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 21865524,
+            "encode_ns": 18730347800,
+            "decode_ns": 2841631700,
+            "encode_mpps": 1.2256904807715316,
+            "decode_mpps": 8.079023400534277
+          }
+        },
+        "tecnick-photos": {
+          "lite": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 154254682,
+            "encode_ns": 1552461100,
+            "decode_ns": 778416500,
+            "encode_mpps": 92.75594731487958,
+            "decode_mpps": 184.99093994025048
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 154254682,
+            "encode_ns": 1736801300,
+            "decode_ns": 987496800,
+            "encode_mpps": 82.91103881601194,
+            "decode_mpps": 145.82325735131496
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 154254682,
+            "encode_ns": 6234229300,
+            "decode_ns": 3393477600,
+            "encode_mpps": 23.09828417764486,
+            "decode_mpps": 42.43434522744455
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 384861160,
+            "encode_ns": 4667084900,
+            "decode_ns": 1791622500,
+            "encode_mpps": 30.854377643740744,
+            "decode_mpps": 80.37407433764646
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 183737719,
+            "encode_ns": 2672584600,
+            "decode_ns": 1215048800,
+            "encode_mpps": 53.880427208927266,
+            "decode_mpps": 118.51375845974252
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 154221536,
+            "encode_ns": 109718367400,
+            "decode_ns": 17611660600,
+            "encode_mpps": 1.3124511730567365,
+            "decode_mpps": 8.176401037389967
+          }
+        },
+        "tiny-icons": {
+          "lite": {
+            "images": 100,
+            "pixels": 409600,
+            "bytes": 357860,
+            "encode_ns": 10433400,
+            "decode_ns": 6369800,
+            "encode_mpps": 39.25853508923266,
+            "decode_mpps": 64.30343181889542
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 409600,
+            "bytes": 357860,
+            "encode_ns": 10328300,
+            "decode_ns": 6367400,
+            "encode_mpps": 39.65802697442948,
+            "decode_mpps": 64.32766906429626
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 409600,
+            "bytes": 357860,
+            "encode_ns": 10557900,
+            "decode_ns": 6286500,
+            "encode_mpps": 38.79559382074087,
+            "decode_mpps": 65.15549192714548
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 409600,
+            "bytes": 509239,
+            "encode_ns": 10701600,
+            "decode_ns": 5563700,
+            "encode_mpps": 38.27465051954848,
+            "decode_mpps": 73.62007297302155
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 409600,
+            "bytes": 559099,
+            "encode_ns": 31542700,
+            "decode_ns": 22863100,
+            "encode_mpps": 12.985571938990638,
+            "decode_mpps": 17.915330816905843
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 409600,
+            "bytes": 266475,
+            "encode_ns": 430426500,
+            "decode_ns": 65912900,
+            "encode_mpps": 0.9516142709614765,
+            "decode_mpps": 6.214261548194663
+          }
+        }
+      },
+      "sources": {
+        "rgba-results.jsonl": {
+          "sha256": "44f62912a7e737047a0b0b99e746e2aee6ad54de6784e3b43f016c0fa7b18d89",
+          "codecs": [
+            "lite",
+            "lite-sse42",
+            "lite-scalar"
+          ]
+        },
+        "rgba-codecs.jsonl": {
+          "sha256": "d0f47046dbe589382c8f1f1bf615417b29634c2ae94247c97b07bdd57c5b80eb",
+          "codecs": [
+            "png1",
+            "htj2k6"
+          ]
+        },
+        "rgba-jxl7.jsonl": {
+          "sha256": "f907b77bc3d3dba4183e54d178594f72f8e0a4ea8f0cf6cac57182d8a3d06abb",
+          "codecs": [
+            "jxl7"
+          ]
+        }
+      }
+    },
+    "rgb": {
+      "manifest_sha256": "24fbcdaec3a021d7888c50f0d2bb03e00655096713ee73f9b6c06ac2d74e8cbd",
+      "observations_sha256": "194d6f52428a57e0295c772109e38b41b88e610c9938441750a4e33acb191519",
+      "totals": {
+        "lite": {
+          "images": 2400,
+          "pixels": 2421319841,
+          "bytes": 1770315679,
+          "encode_ns": 33682169400,
+          "decode_ns": 11093772800,
+          "encode_mpps": 71.88728885735014,
+          "decode_mpps": 218.25936808440858
+        },
+        "lite-sse42": {
+          "images": 2400,
+          "pixels": 2421319841,
+          "bytes": 1770315679,
+          "encode_ns": 36306534200,
+          "decode_ns": 13720531100,
+          "encode_mpps": 66.69102117161049,
+          "decode_mpps": 176.4742066726557
+        },
+        "lite-scalar": {
+          "images": 2400,
+          "pixels": 2421319841,
+          "bytes": 1770315679,
+          "encode_ns": 110597309500,
+          "decode_ns": 42511114500,
+          "encode_mpps": 21.893117038258513,
+          "decode_mpps": 56.95733620439427
+        },
+        "png1": {
+          "images": 2400,
+          "pixels": 2421319841,
+          "bytes": 3876124405,
+          "encode_ns": 53312173600,
+          "decode_ns": 19881366900,
+          "encode_mpps": 45.4177662904369,
+          "decode_mpps": 121.78839881477164
+        },
+        "htj2k6": {
+          "images": 2400,
+          "pixels": 2421319841,
+          "bytes": 2282391415,
+          "encode_ns": 36102499400,
+          "decode_ns": 17808461800,
+          "encode_mpps": 67.06792829418342,
+          "decode_mpps": 135.96456943855756
+        },
+        "fnbli": {
+          "images": 2400,
+          "pixels": 2421319841,
+          "bytes": 1881629768,
+          "encode_ns": 67343637500,
+          "decode_ns": 44254219700,
+          "encode_mpps": 35.95469343336258,
+          "decode_mpps": 54.71387491213635
+        },
+        "l1c0": {
+          "images": 2400,
+          "pixels": 2421319841,
+          "bytes": 1919992801,
+          "encode_ns": 11663474400,
+          "decode_ns": 11355360600,
+          "encode_mpps": 207.59850435304253,
+          "decode_mpps": 213.2314354684606
+        },
+        "jxl7": {
+          "images": 2400,
+          "pixels": 2421319841,
+          "bytes": 1770352295,
+          "encode_ns": 1325364417300,
+          "decode_ns": 223313664000,
+          "encode_mpps": 1.826908742527322,
+          "decode_mpps": 10.84268556446237
+        }
+      },
+      "categories": {
+        "aerial-resisc": {
+          "lite": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 5544867,
+            "encode_ns": 233469300,
+            "decode_ns": 66048000,
+            "encode_mpps": 28.070500061464184,
+            "decode_mpps": 99.2248062015504
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 5544867,
+            "encode_ns": 225658500,
+            "decode_ns": 73386700,
+            "encode_mpps": 29.042114522608276,
+            "decode_mpps": 89.30228501894757
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 5544867,
+            "encode_ns": 443954000,
+            "decode_ns": 143438200,
+            "encode_mpps": 14.761889745333976,
+            "decode_mpps": 45.689363084589736
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 14255358,
+            "encode_ns": 178218800,
+            "decode_ns": 78878300,
+            "encode_mpps": 36.77277593609653,
+            "decode_mpps": 83.08495492423138
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 7015500,
+            "encode_ns": 140869200,
+            "decode_ns": 78353100,
+            "encode_mpps": 46.522589749924045,
+            "decode_mpps": 83.6418724977059
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 5870886,
+            "encode_ns": 201507000,
+            "decode_ns": 140693100,
+            "encode_mpps": 32.522939649739214,
+            "decode_mpps": 46.58082023922993
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 5821251,
+            "encode_ns": 36394900,
+            "decode_ns": 32701600,
+            "encode_mpps": 180.06918551775112,
+            "decode_mpps": 200.40609633779388
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 6553600,
+            "bytes": 5225348,
+            "encode_ns": 4928485100,
+            "decode_ns": 749684600,
+            "encode_mpps": 1.3297392336643161,
+            "decode_mpps": 8.741809555645133
+          }
+        },
+        "aerial-ucmerced": {
+          "lite": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 8518491,
+            "encode_ns": 228773500,
+            "decode_ns": 65516800,
+            "encode_mpps": 28.623529386052144,
+            "decode_mpps": 99.94848649506692
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 8518491,
+            "encode_ns": 226724900,
+            "decode_ns": 74032100,
+            "encode_mpps": 28.88216071547501,
+            "decode_mpps": 88.45223896120737
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 8518491,
+            "encode_ns": 460517100,
+            "decode_ns": 147163000,
+            "encode_mpps": 14.219461123159162,
+            "decode_mpps": 44.49695235894892
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 16866647,
+            "encode_ns": 194709100,
+            "decode_ns": 75898400,
+            "encode_mpps": 33.631222166811924,
+            "decode_mpps": 86.27724695118738
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 9716404,
+            "encode_ns": 140721900,
+            "decode_ns": 72884800,
+            "encode_mpps": 46.53365965070113,
+            "decode_mpps": 89.8445903672645
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 8456346,
+            "encode_ns": 206589600,
+            "decode_ns": 138093600,
+            "encode_mpps": 31.697166749923518,
+            "decode_mpps": 47.419322836105366
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 8977394,
+            "encode_ns": 31670100,
+            "decode_ns": 31215500,
+            "encode_mpps": 206.76616114252874,
+            "decode_mpps": 209.77735419903573
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 6548305,
+            "bytes": 8125417,
+            "encode_ns": 5372950700,
+            "decode_ns": 767823000,
+            "encode_mpps": 1.218753970699936,
+            "decode_mpps": 8.528404332769401
+          }
+        },
+        "android-ui": {
+          "lite": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 37167071,
+            "encode_ns": 2401425900,
+            "decode_ns": 608042200,
+            "encode_mpps": 69.51070195420147,
+            "decode_mpps": 274.52831398873303
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 37167071,
+            "encode_ns": 2543161800,
+            "decode_ns": 686612600,
+            "encode_mpps": 65.63672040056593,
+            "decode_mpps": 243.11351117063683
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 37167071,
+            "encode_ns": 6055013000,
+            "decode_ns": 1935444600,
+            "encode_mpps": 27.568033297368643,
+            "decode_mpps": 86.2462299360054
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 84450064,
+            "encode_ns": 2097940900,
+            "decode_ns": 717061100,
+            "encode_mpps": 79.56601637348317,
+            "decode_mpps": 232.79020434939227
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 55175150,
+            "encode_ns": 1502087800,
+            "decode_ns": 980783400,
+            "encode_mpps": 111.12852391185122,
+            "decode_mpps": 170.19537647150227
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 40758854,
+            "encode_ns": 4292509900,
+            "decode_ns": 2967077400,
+            "encode_mpps": 38.887458360899764,
+            "decode_mpps": 56.258997490257585
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 38811642,
+            "encode_ns": 767569200,
+            "decode_ns": 762505800,
+            "encode_mpps": 217.47198819337723,
+            "decode_mpps": 218.9161052938876
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 166924800,
+            "bytes": 35840484,
+            "encode_ns": 56435184900,
+            "decode_ns": 11812099200,
+            "encode_mpps": 2.957814354569431,
+            "decode_mpps": 14.131679490128224
+          }
+        },
+        "bsds-photos": {
+          "lite": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 15816487,
+            "encode_ns": 368074500,
+            "decode_ns": 144541600,
+            "encode_mpps": 41.94830122706137,
+            "decode_mpps": 106.82115045080448
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 15816487,
+            "encode_ns": 356235600,
+            "decode_ns": 161743800,
+            "encode_mpps": 43.34238352371296,
+            "decode_mpps": 95.46022784180909
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 15816487,
+            "encode_ns": 873409900,
+            "decode_ns": 338999300,
+            "encode_mpps": 17.677953959532633,
+            "decode_mpps": 45.5461117471334
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 36061801,
+            "encode_ns": 434954300,
+            "decode_ns": 162976700,
+            "encode_mpps": 35.49821211101948,
+            "decode_mpps": 94.73808219211703
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 19223242,
+            "encode_ns": 319548700,
+            "decode_ns": 159196300,
+            "encode_mpps": 48.318456623356624,
+            "decode_mpps": 96.98780687742115
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 16365814,
+            "encode_ns": 467325000,
+            "decode_ns": 310274800,
+            "encode_mpps": 33.039319531375384,
+            "decode_mpps": 49.76266200155475
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 16547296,
+            "encode_ns": 75472400,
+            "decode_ns": 70188600,
+            "encode_mpps": 204.57942241137158,
+            "decode_mpps": 219.9801677195442
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 15440100,
+            "bytes": 15240878,
+            "encode_ns": 11637402000,
+            "decode_ns": 1799066300,
+            "encode_mpps": 1.326765200686545,
+            "decode_mpps": 8.582285155360866
+          }
+        },
+        "charts-and-plots": {
+          "lite": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 1968981,
+            "encode_ns": 854386400,
+            "decode_ns": 54678200,
+            "encode_mpps": 43.70272981873307,
+            "decode_mpps": 682.8867446258289
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 1968981,
+            "encode_ns": 861932500,
+            "decode_ns": 55439700,
+            "encode_mpps": 43.32011845475139,
+            "decode_mpps": 673.5068551958253
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 1968981,
+            "encode_ns": 1778485500,
+            "decode_ns": 90684700,
+            "encode_mpps": 20.994839710528986,
+            "decode_mpps": 411.74550944095313
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 4167746,
+            "encode_ns": 334978000,
+            "decode_ns": 66726400,
+            "encode_mpps": 111.46707544973103,
+            "decode_mpps": 559.5838828409745
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 6429842,
+            "encode_ns": 281164600,
+            "decode_ns": 211722400,
+            "encode_mpps": 132.80127725894368,
+            "decode_mpps": 176.35837303941386
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 3749556,
+            "encode_ns": 963631000,
+            "decode_ns": 680260200,
+            "encode_mpps": 38.74825322140944,
+            "decode_mpps": 54.88931735238957
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 2297822,
+            "encode_ns": 171508600,
+            "decode_ns": 171682800,
+            "encode_mpps": 217.70930437307516,
+            "decode_mpps": 217.4884030316374
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 37339018,
+            "bytes": 1644315,
+            "encode_ns": 7645282400,
+            "decode_ns": 1443320300,
+            "encode_mpps": 4.883929205806708,
+            "decode_mpps": 25.870222985154438
+          }
+        },
+        "coco-photos": {
+          "lite": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 33634209,
+            "encode_ns": 519588700,
+            "decode_ns": 176495700,
+            "encode_mpps": 52.627622579166946,
+            "decode_mpps": 154.93135526814535
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 33634209,
+            "encode_ns": 543198400,
+            "decode_ns": 213246900,
+            "encode_mpps": 50.34020350575407,
+            "decode_mpps": 128.2303189401581
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 33634209,
+            "encode_ns": 1478800900,
+            "decode_ns": 606424100,
+            "encode_mpps": 18.49114238434667,
+            "decode_mpps": 45.09174025240751
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 66429518,
+            "encode_ns": 779563400,
+            "decode_ns": 268163400,
+            "encode_mpps": 35.076964875467475,
+            "decode_mpps": 101.97035837105287
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 39709741,
+            "encode_ns": 520116200,
+            "decode_ns": 238597200,
+            "encode_mpps": 52.57424783154226,
+            "decode_mpps": 114.60619822864643
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 34339138,
+            "encode_ns": 805879700,
+            "decode_ns": 516358900,
+            "encode_mpps": 33.93151359936229,
+            "decode_mpps": 52.956805818588585
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 34769169,
+            "encode_ns": 139779500,
+            "decode_ns": 131117300,
+            "encode_mpps": 195.62752764175005,
+            "decode_mpps": 208.5515641337947
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 27344718,
+            "bytes": 33161692,
+            "encode_ns": 22634272700,
+            "decode_ns": 3318258300,
+            "encode_mpps": 1.2081111844163652,
+            "decode_mpps": 8.240683975686883
+          }
+        },
+        "commons-landscapes": {
+          "lite": {
+            "images": 100,
+            "pixels": 235314254,
+            "bytes": 213335611,
+            "encode_ns": 2708181800,
+            "decode_ns": 1204997200,
+            "encode_mpps": 86.89012458469368,
+            "decode_mpps": 195.28199235649677
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 235314254,
+            "bytes": 213335611,
+            "encode_ns": 2969820300,
+            "decode_ns": 1546676700,
+            "encode_mpps": 79.23518268091844,
+            "decode_mpps": 152.1418496832596
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 235314254,
+            "bytes": 213335611,
+            "encode_ns": 10695038800,
+            "decode_ns": 5142833000,
+            "encode_mpps": 22.002187967751926,
+            "decode_mpps": 45.755764186781875
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 235314254,
+            "bytes": 485979312,
+            "encode_ns": 6056921400,
+            "decode_ns": 2174790200,
+            "encode_mpps": 38.85047179248521,
+            "decode_mpps": 108.20089864300473
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 235314254,
+            "bytes": 269290055,
+            "encode_ns": 3980535300,
+            "decode_ns": 1831928600,
+            "encode_mpps": 59.11623343724649,
+            "decode_mpps": 128.45165144536747
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 235314254,
+            "bytes": 224732362,
+            "encode_ns": 6654820500,
+            "decode_ns": 4309039200,
+            "encode_mpps": 35.35997011489641,
+            "decode_mpps": 54.6094484357441
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 235314254,
+            "bytes": 224539018,
+            "encode_ns": 1170010600,
+            "decode_ns": 1125361800,
+            "encode_mpps": 201.12147189093844,
+            "decode_mpps": 209.1009789029626
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 235314254,
+            "bytes": 215150225,
+            "encode_ns": 153584333100,
+            "decode_ns": 24286303800,
+            "encode_mpps": 1.532150117465334,
+            "decode_mpps": 9.689175262643301
+          }
+        },
+        "desktop-ui": {
+          "lite": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 18210660,
+            "encode_ns": 2081574000,
+            "decode_ns": 265771500,
+            "encode_mpps": 53.39969993860415,
+            "decode_mpps": 418.2368199750538
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 18210660,
+            "encode_ns": 2165364600,
+            "decode_ns": 292784700,
+            "encode_mpps": 51.333353745600164,
+            "decode_mpps": 379.6490287914635
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 18210660,
+            "encode_ns": 5056929100,
+            "decode_ns": 639018000,
+            "encode_mpps": 21.980815787984845,
+            "decode_mpps": 173.9472550069012
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 35459039,
+            "encode_ns": 1211830800,
+            "decode_ns": 400669900,
+            "encode_mpps": 91.72520371655845,
+            "decode_mpps": 277.42395173682877
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 42799587,
+            "encode_ns": 1110164600,
+            "decode_ns": 730925500,
+            "encode_mpps": 100.12517693322233,
+            "decode_mpps": 152.07490640290973
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 27633664,
+            "encode_ns": 2915031000,
+            "decode_ns": 2027573500,
+            "encode_mpps": 38.13181643694355,
+            "decode_mpps": 54.821897701858894
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 30516909,
+            "encode_ns": 519753100,
+            "decode_ns": 529185500,
+            "encode_mpps": 213.86197985158722,
+            "decode_mpps": 210.05002404638827
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 111155427,
+            "bytes": 20723368,
+            "encode_ns": 33979711400,
+            "decode_ns": 6875888800,
+            "encode_mpps": 3.271229284189859,
+            "decode_mpps": 16.165972172208487
+          }
+        },
+        "div2k-training-photos": {
+          "lite": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 297233886,
+            "encode_ns": 3050687700,
+            "decode_ns": 1419471600,
+            "encode_mpps": 91.46234142550874,
+            "decode_mpps": 196.56824412689906
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 297233886,
+            "encode_ns": 3412588300,
+            "decode_ns": 1844985500,
+            "encode_mpps": 81.76287775469429,
+            "decode_mpps": 151.23318855351437
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 297233886,
+            "encode_ns": 12223110700,
+            "decode_ns": 6371580900,
+            "encode_mpps": 22.827498404313722,
+            "decode_mpps": 43.791806833999395
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 632370733,
+            "encode_ns": 7624538500,
+            "decode_ns": 2693990800,
+            "encode_mpps": 36.59540049538736,
+            "decode_mpps": 103.5723804253526
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 352239804,
+            "encode_ns": 4891106200,
+            "decode_ns": 2152879900,
+            "encode_mpps": 57.047021387513524,
+            "decode_mpps": 129.6045543460181
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 298833018,
+            "encode_ns": 7973652400,
+            "decode_ns": 5124988200,
+            "encode_mpps": 34.993128117799564,
+            "decode_mpps": 54.44364535317369
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 314342087,
+            "encode_ns": 1370520100,
+            "decode_ns": 1318735800,
+            "encode_mpps": 203.58916297542808,
+            "decode_mpps": 211.58373041817777
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 279023040,
+            "bytes": 299733035,
+            "encode_ns": 193569582600,
+            "decode_ns": 30483259600,
+            "encode_mpps": 1.441461185441436,
+            "decode_mpps": 9.15332033586067
+          }
+        },
+        "div2k-validation-photos": {
+          "lite": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 299974255,
+            "encode_ns": 3035332700,
+            "decode_ns": 1426126700,
+            "encode_mpps": 93.40092438631191,
+            "decode_mpps": 198.79221109877545
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 299974255,
+            "encode_ns": 3369625900,
+            "decode_ns": 1842804400,
+            "encode_mpps": 84.13482339389664,
+            "decode_mpps": 153.84317510854652
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 299974255,
+            "encode_ns": 12346982400,
+            "decode_ns": 6391917200,
+            "encode_mpps": 22.961309153562897,
+            "decode_mpps": 44.35334049696388
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 642963027,
+            "encode_ns": 7667867800,
+            "decode_ns": 2768039600,
+            "encode_mpps": 36.97284400234443,
+            "decode_mpps": 102.42009543505085
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 354910679,
+            "encode_ns": 4963923300,
+            "decode_ns": 2188742300,
+            "encode_mpps": 57.11266328389885,
+            "decode_mpps": 129.52775664819015
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 300975772,
+            "encode_ns": 8108872400,
+            "decode_ns": 5198949600,
+            "encode_mpps": 34.96205958303155,
+            "decode_mpps": 54.53079983695168
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 316820197,
+            "encode_ns": 1394127800,
+            "decode_ns": 1347924400,
+            "encode_mpps": 203.35501522887643,
+            "decode_mpps": 210.3255049022037
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 283502880,
+            "bytes": 301986182,
+            "encode_ns": 194525948200,
+            "decode_ns": 30782350400,
+            "encode_mpps": 1.457403922835627,
+            "decode_mpps": 9.209916602079872
+          }
+        },
+        "game-screenshots": {
+          "lite": {
+            "images": 100,
+            "pixels": 63503747,
+            "bytes": 30929391,
+            "encode_ns": 1955500500,
+            "decode_ns": 260651100,
+            "encode_mpps": 32.474421254302925,
+            "decode_mpps": 243.63506234963137
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 63503747,
+            "bytes": 30929391,
+            "encode_ns": 2024115300,
+            "decode_ns": 295670400,
+            "encode_mpps": 31.373581831035022,
+            "decode_mpps": 214.77884495708736
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 63503747,
+            "bytes": 30929391,
+            "encode_ns": 5548945700,
+            "decode_ns": 784532300,
+            "encode_mpps": 11.44429057937979,
+            "decode_mpps": 80.94471954819451
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 63503747,
+            "bytes": 63300176,
+            "encode_ns": 1081951500,
+            "decode_ns": 422398800,
+            "encode_mpps": 58.69370946849281,
+            "decode_mpps": 150.3407372369429
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 63503747,
+            "bytes": 51013173,
+            "encode_ns": 1015119100,
+            "decode_ns": 542526100,
+            "encode_mpps": 62.557927439253184,
+            "decode_mpps": 117.05196671644
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 63503747,
+            "bytes": 37065788,
+            "encode_ns": 1743905800,
+            "decode_ns": 1172237100,
+            "encode_mpps": 36.414665860965655,
+            "decode_mpps": 54.17312504441294
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 63503747,
+            "bytes": 35023710,
+            "encode_ns": 343133100,
+            "decode_ns": 321599300,
+            "encode_mpps": 185.070303622705,
+            "decode_mpps": 197.46232967546882
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 63503747,
+            "bytes": 29722895,
+            "encode_ns": 29873749600,
+            "decode_ns": 5598575300,
+            "encode_mpps": 2.125737406595923,
+            "decode_mpps": 11.342840561597876
+          }
+        },
+        "industrial-cables": {
+          "lite": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 105169608,
+            "encode_ns": 1165783000,
+            "decode_ns": 579731900,
+            "encode_mpps": 89.94607058088856,
+            "decode_mpps": 180.87257230454284
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 105169608,
+            "encode_ns": 1331522300,
+            "decode_ns": 745951100,
+            "encode_mpps": 78.7501643795226,
+            "decode_mpps": 140.56899976419365
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 105169608,
+            "encode_ns": 4745372400,
+            "decode_ns": 2420341700,
+            "encode_mpps": 22.09681162220272,
+            "decode_mpps": 43.32346957456462
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 222929711,
+            "encode_ns": 2898583300,
+            "decode_ns": 1225840500,
+            "encode_mpps": 36.17546544203163,
+            "decode_mpps": 85.53935034778179
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 122551961,
+            "encode_ns": 1799038000,
+            "decode_ns": 797868800,
+            "encode_mpps": 58.28537251575564,
+            "decode_mpps": 131.4221084970361
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 106025038,
+            "encode_ns": 3004196800,
+            "decode_ns": 1903338000,
+            "encode_mpps": 34.90370537642541,
+            "decode_mpps": 55.091423593707475
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 111997499,
+            "encode_ns": 494299900,
+            "decode_ns": 482118100,
+            "encode_mpps": 212.13356506849385,
+            "decode_mpps": 217.49359752309653
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 105507706,
+            "encode_ns": 60871825000,
+            "decode_ns": 10256152200,
+            "encode_mpps": 1.7225966200290528,
+            "decode_mpps": 10.223873237762598
+          }
+        },
+        "industrial-fabrics": {
+          "lite": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 132630555,
+            "encode_ns": 1133827000,
+            "decode_ns": 550601100,
+            "encode_mpps": 92.48112807333041,
+            "decode_mpps": 190.44204597484458
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 132630555,
+            "encode_ns": 1304344000,
+            "decode_ns": 729192600,
+            "encode_mpps": 80.39106248044995,
+            "decode_mpps": 143.79959423614557
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 132630555,
+            "encode_ns": 4978885100,
+            "decode_ns": 2533662200,
+            "encode_mpps": 21.060457892470748,
+            "decode_mpps": 41.38578536633652
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 262059808,
+            "encode_ns": 3270697800,
+            "decode_ns": 1245565800,
+            "encode_mpps": 32.05970297836749,
+            "decode_mpps": 84.18471348522897
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 155279074,
+            "encode_ns": 1844167400,
+            "decode_ns": 794478800,
+            "encode_mpps": 56.85904652690423,
+            "decode_mpps": 131.982879845252
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 135385944,
+            "encode_ns": 3093869800,
+            "decode_ns": 1912548600,
+            "encode_mpps": 33.89205324671387,
+            "decode_mpps": 54.82611003976579
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 138600053,
+            "encode_ns": 462681800,
+            "decode_ns": 469329300,
+            "encode_mpps": 226.63005114962377,
+            "decode_mpps": 223.42010183468196
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 104857600,
+            "bytes": 134445723,
+            "encode_ns": 72082017300,
+            "decode_ns": 10882408700,
+            "encode_mpps": 1.4546984661041111,
+            "decode_mpps": 9.635513872953512
+          }
+        },
+        "industrial-metal-parts": {
+          "lite": {
+            "images": 100,
+            "pixels": 49000000,
+            "bytes": 43310903,
+            "encode_ns": 694353200,
+            "decode_ns": 336028100,
+            "encode_mpps": 70.56927223781787,
+            "decode_mpps": 145.8211381726707
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 49000000,
+            "bytes": 43310903,
+            "encode_ns": 768507400,
+            "decode_ns": 409001600,
+            "encode_mpps": 63.75995858985873,
+            "decode_mpps": 119.80393230735528
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 49000000,
+            "bytes": 43310903,
+            "encode_ns": 2255512300,
+            "decode_ns": 1071678800,
+            "encode_mpps": 21.7245545502013,
+            "decode_mpps": 45.72265495967635
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 49000000,
+            "bytes": 78128075,
+            "encode_ns": 1113385000,
+            "decode_ns": 541248600,
+            "encode_mpps": 44.009933670742825,
+            "decode_mpps": 90.53141199810956
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 49000000,
+            "bytes": 64364498,
+            "encode_ns": 890829400,
+            "decode_ns": 413509500,
+            "encode_mpps": 55.004920133978516,
+            "decode_mpps": 118.49788215264704
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 49000000,
+            "bytes": 55883084,
+            "encode_ns": 1436220200,
+            "decode_ns": 915675700,
+            "encode_mpps": 34.11733103322179,
+            "decode_mpps": 53.51239527269316
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 49000000,
+            "bytes": 37673867,
+            "encode_ns": 266201600,
+            "decode_ns": 241704900,
+            "encode_mpps": 184.07101985863346,
+            "decode_mpps": 202.7265479516551
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 49000000,
+            "bytes": 28999990,
+            "encode_ns": 29540421600,
+            "decode_ns": 5362428400,
+            "encode_mpps": 1.658744098628572,
+            "decode_mpps": 9.137651143276804
+          }
+        },
+        "industrial-objects": {
+          "lite": {
+            "images": 100,
+            "pixels": 90231344,
+            "bytes": 88570766,
+            "encode_ns": 1389229300,
+            "decode_ns": 471288300,
+            "encode_mpps": 64.95064853584645,
+            "decode_mpps": 191.4567877029835
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 90231344,
+            "bytes": 88570766,
+            "encode_ns": 1524231000,
+            "decode_ns": 598075400,
+            "encode_mpps": 59.19794571820151,
+            "decode_mpps": 150.86951243940146
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 90231344,
+            "bytes": 88570766,
+            "encode_ns": 5422517200,
+            "decode_ns": 1946050400,
+            "encode_mpps": 16.640121307499033,
+            "decode_mpps": 46.36639626599599
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 90231344,
+            "bytes": 178049883,
+            "encode_ns": 2433112700,
+            "decode_ns": 1043432600,
+            "encode_mpps": 37.084736765378764,
+            "decode_mpps": 86.47548868992592
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 90231344,
+            "bytes": 107451687,
+            "encode_ns": 1543508000,
+            "decode_ns": 704258400,
+            "encode_mpps": 58.45861764240937,
+            "decode_mpps": 128.12249594751017
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 90231344,
+            "bytes": 93460008,
+            "encode_ns": 2594583000,
+            "decode_ns": 1641450900,
+            "encode_mpps": 34.77681924224432,
+            "decode_mpps": 54.97048007954426
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 90231344,
+            "bytes": 89926670,
+            "encode_ns": 439921000,
+            "decode_ns": 421090300,
+            "encode_mpps": 205.10806258396394,
+            "decode_mpps": 214.28027195117056
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 90231344,
+            "bytes": 85232200,
+            "encode_ns": 56967416200,
+            "decode_ns": 9774373400,
+            "encode_mpps": 1.5839114711332125,
+            "decode_mpps": 9.231419785947608
+          }
+        },
+        "math-text": {
+          "lite": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 184645,
+            "encode_ns": 58542800,
+            "decode_ns": 5758900,
+            "encode_mpps": 67.25848439090717,
+            "decode_mpps": 683.7243223532272
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 184645,
+            "encode_ns": 59353300,
+            "decode_ns": 5772000,
+            "encode_mpps": 66.34003501069023,
+            "decode_mpps": 682.1725571725572
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 184645,
+            "encode_ns": 81189000,
+            "decode_ns": 7948700,
+            "encode_mpps": 48.49794922957543,
+            "decode_mpps": 495.3640217897266
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 396782,
+            "encode_ns": 36385800,
+            "decode_ns": 4686900,
+            "encode_mpps": 108.21529277905117,
+            "decode_mpps": 840.1075337643218
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 319731,
+            "encode_ns": 51033800,
+            "decode_ns": 30419800,
+            "encode_mpps": 77.1547484216343,
+            "decode_mpps": 129.43872083314156
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 214830,
+            "encode_ns": 115914000,
+            "decode_ns": 90578300,
+            "encode_mpps": 33.96914954190176,
+            "decode_mpps": 43.47067675149567
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 376897,
+            "encode_ns": 20884900,
+            "decode_ns": 20748900,
+            "encode_mpps": 188.5333422712103,
+            "decode_mpps": 189.7690961930512
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 3937500,
+            "bytes": 133434,
+            "encode_ns": 764387900,
+            "decode_ns": 129775200,
+            "encode_mpps": 5.151180441239323,
+            "decode_mpps": 30.34092800473434
+          }
+        },
+        "microscopy": {
+          "lite": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 5486168,
+            "encode_ns": 354798100,
+            "decode_ns": 55922900,
+            "encode_mpps": 43.37591153954883,
+            "decode_mpps": 275.1947949766554
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 5486168,
+            "encode_ns": 355959300,
+            "decode_ns": 60957900,
+            "encode_mpps": 43.23441191169889,
+            "decode_mpps": 252.46425811912812
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 5486168,
+            "encode_ns": 660967200,
+            "decode_ns": 129932500,
+            "encode_mpps": 23.28359258976845,
+            "decode_mpps": 118.44373809477999
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 15885472,
+            "encode_ns": 275433400,
+            "decode_ns": 104109800,
+            "encode_mpps": 55.87445458684386,
+            "decode_mpps": 147.82173244017375
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 6517040,
+            "encode_ns": 158964200,
+            "decode_ns": 88350900,
+            "encode_mpps": 96.81230742519385,
+            "decode_mpps": 174.18827652010336
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 5431354,
+            "encode_ns": 409795900,
+            "decode_ns": 287438000,
+            "encode_mpps": 37.55452653381842,
+            "decode_mpps": 53.540906212818065
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 5979271,
+            "encode_ns": 65794200,
+            "decode_ns": 66145800,
+            "encode_mpps": 233.90649935708618,
+            "decode_mpps": 232.66316228694794
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 15389691,
+            "bytes": 5098512,
+            "encode_ns": 4703004400,
+            "decode_ns": 783532100,
+            "encode_mpps": 3.2723105681125877,
+            "decode_mpps": 19.641430134132346
+          }
+        },
+        "mobile-and-web-ui": {
+          "lite": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 46895619,
+            "encode_ns": 5346908600,
+            "decode_ns": 677782200,
+            "encode_mpps": 62.60262612306483,
+            "decode_mpps": 493.86147939559345
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 46895619,
+            "encode_ns": 5644529000,
+            "decode_ns": 710235500,
+            "encode_mpps": 59.301762822017565,
+            "decode_mpps": 471.29511267741475
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 46895619,
+            "encode_ns": 14511630400,
+            "decode_ns": 1410434500,
+            "encode_mpps": 23.066361998855758,
+            "decode_mpps": 237.3243989706718
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 107419412,
+            "encode_ns": 3658043600,
+            "decode_ns": 1088925700,
+            "encode_mpps": 91.50533908343793,
+            "decode_mpps": 307.39518775247933
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 122647393,
+            "encode_ns": 3004300100,
+            "decode_ns": 1962157500,
+            "encode_mpps": 111.41713838773963,
+            "decode_mpps": 170.59309459103054
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 77800882,
+            "encode_ns": 8729931500,
+            "decode_ns": 6047572300,
+            "encode_mpps": 38.34285755850433,
+            "decode_mpps": 55.34956895017196
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 92137960,
+            "encode_ns": 1480383800,
+            "decode_ns": 1544141000,
+            "encode_mpps": 226.11063428281233,
+            "decode_mpps": 216.7745821139391
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 334730520,
+            "bytes": 57780864,
+            "encode_ns": 93311556900,
+            "decode_ns": 18945321900,
+            "encode_mpps": 3.587235398491138,
+            "decode_mpps": 17.668241361472987
+          }
+        },
+        "paintings": {
+          "lite": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 165018277,
+            "encode_ns": 2878795500,
+            "decode_ns": 1557859200,
+            "encode_mpps": 93.65325463375221,
+            "decode_mpps": 173.0635015025748
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 165018277,
+            "encode_ns": 3189703400,
+            "decode_ns": 1918936200,
+            "encode_mpps": 84.52465141429764,
+            "decode_mpps": 140.4989743796589
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 165018277,
+            "encode_ns": 10496079300,
+            "decode_ns": 5896650100,
+            "encode_mpps": 25.68659785182835,
+            "decode_mpps": 45.72232766532984
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 460997370,
+            "encode_ns": 6163400100,
+            "decode_ns": 2657423900,
+            "encode_mpps": 43.74347983672194,
+            "decode_mpps": 101.45485934705411
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 224939397,
+            "encode_ns": 4175518000,
+            "decode_ns": 2097782700,
+            "encode_mpps": 64.56889133276398,
+            "decode_mpps": 128.52073191374873
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 180712294,
+            "encode_ns": 7349883800,
+            "decode_ns": 4836162600,
+            "encode_mpps": 36.68201774836223,
+            "decode_mpps": 55.748449814321795
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 178301273,
+            "encode_ns": 1346877200,
+            "decode_ns": 1241250600,
+            "encode_mpps": 200.1730877915225,
+            "decode_mpps": 217.2072005443542
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 269608568,
+            "bytes": 168347716,
+            "encode_ns": 149190011600,
+            "decode_ns": 26940857300,
+            "encode_mpps": 1.8071489177362594,
+            "decode_mpps": 10.00742348314209
+          }
+        },
+        "pk01-textures": {
+          "lite": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 11787793,
+            "encode_ns": 487192800,
+            "decode_ns": 80938600,
+            "encode_mpps": 26.634482282989403,
+            "decode_mpps": 160.3206381133353
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 11787793,
+            "encode_ns": 484812000,
+            "decode_ns": 90990800,
+            "encode_mpps": 26.76527808717606,
+            "decode_mpps": 142.609230823336
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 11787793,
+            "encode_ns": 1060278900,
+            "decode_ns": 190232600,
+            "encode_mpps": 12.238410101342204,
+            "decode_mpps": 68.21190479444638
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 21489299,
+            "encode_ns": 294007700,
+            "decode_ns": 100385500,
+            "encode_mpps": 44.13533387050747,
+            "decode_mpps": 129.26297124584727
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 15683176,
+            "encode_ns": 217934900,
+            "decode_ns": 114040700,
+            "encode_mpps": 59.54130338922311,
+            "decode_mpps": 113.78506094753891
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 12635858,
+            "encode_ns": 381674700,
+            "decode_ns": 253187500,
+            "encode_mpps": 33.99787305786839,
+            "decode_mpps": 51.251060972599355
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 12708669,
+            "encode_ns": 59997200,
+            "decode_ns": 60112800,
+            "encode_mpps": 216.27889301500736,
+            "decode_mpps": 215.86297760210803
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 12976128,
+            "bytes": 11032235,
+            "encode_ns": 8188548400,
+            "decode_ns": 1261727700,
+            "encode_mpps": 1.5846676805378594,
+            "decode_mpps": 10.28441239738178
+          }
+        },
+        "pk02-textures": {
+          "lite": {
+            "images": 100,
+            "pixels": 31825920,
+            "bytes": 28002989,
+            "encode_ns": 482895900,
+            "decode_ns": 139109900,
+            "encode_mpps": 65.90637857973115,
+            "decode_mpps": 228.78256687698
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 31825920,
+            "bytes": 28002989,
+            "encode_ns": 511769500,
+            "decode_ns": 170187200,
+            "encode_mpps": 62.187996744628194,
+            "decode_mpps": 187.00536820630458
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 31825920,
+            "bytes": 28002989,
+            "encode_ns": 1299950100,
+            "decode_ns": 490220300,
+            "encode_mpps": 24.482416671224534,
+            "decode_mpps": 64.92166889049679
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 31825920,
+            "bytes": 57764295,
+            "encode_ns": 733120300,
+            "decode_ns": 255294300,
+            "encode_mpps": 43.41159288591518,
+            "decode_mpps": 124.66365289001752
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 31825920,
+            "bytes": 35787345,
+            "encode_ns": 462005000,
+            "decode_ns": 220629000,
+            "encode_mpps": 68.88652720208655,
+            "decode_mpps": 144.25084644357722
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 31825920,
+            "bytes": 29697544,
+            "encode_ns": 911175200,
+            "decode_ns": 598164600,
+            "encode_mpps": 34.92843088793462,
+            "decode_mpps": 53.205957022531926
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 31825920,
+            "bytes": 29977691,
+            "encode_ns": 144762200,
+            "decode_ns": 144374700,
+            "encode_mpps": 219.84965688556818,
+            "decode_mpps": 220.43973078385616
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 31825920,
+            "bytes": 27088312,
+            "encode_ns": 18722168000,
+            "decode_ns": 2771817800,
+            "encode_mpps": 1.699905694682368,
+            "decode_mpps": 11.481966816144986
+          }
+        },
+        "quake-textures": {
+          "lite": {
+            "images": 100,
+            "pixels": 4297472,
+            "bytes": 4284367,
+            "encode_ns": 172685900,
+            "decode_ns": 10005300,
+            "encode_mpps": 24.88606191935763,
+            "decode_mpps": 429.51955463604287
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 4297472,
+            "bytes": 4284367,
+            "encode_ns": 172008600,
+            "decode_ns": 10257100,
+            "encode_mpps": 24.98405312292525,
+            "decode_mpps": 418.97534390812217
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 4297472,
+            "bytes": 4284367,
+            "encode_ns": 298135600,
+            "decode_ns": 15845300,
+            "encode_mpps": 14.41448790416173,
+            "decode_mpps": 271.2143032949834
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 4297472,
+            "bytes": 11483161,
+            "encode_ns": 129038900,
+            "decode_ns": 41480700,
+            "encode_mpps": 33.30369369236718,
+            "decode_mpps": 103.60172321103549
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 4297472,
+            "bytes": 7891203,
+            "encode_ns": 101964700,
+            "decode_ns": 55123900,
+            "encode_mpps": 42.14666448290438,
+            "decode_mpps": 77.96023140597816
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 4297472,
+            "bytes": 7124540,
+            "encode_ns": 142420500,
+            "decode_ns": 96462700,
+            "encode_mpps": 30.174532458459282,
+            "decode_mpps": 44.55060868086836
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 4297472,
+            "bytes": 7431238,
+            "encode_ns": 23046000,
+            "decode_ns": 23242100,
+            "encode_mpps": 186.47366137290635,
+            "decode_mpps": 184.9003317256186
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 4297472,
+            "bytes": 4101398,
+            "encode_ns": 3748824600,
+            "decode_ns": 272825200,
+            "encode_mpps": 1.1463518458558983,
+            "decode_mpps": 15.75174140805175
+          }
+        },
+        "surface-textures": {
+          "lite": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 22382686,
+            "encode_ns": 461640800,
+            "decode_ns": 162909500,
+            "encode_mpps": 49.73045926616538,
+            "decode_mpps": 140.9224692237101
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 22382686,
+            "encode_ns": 479151200,
+            "decode_ns": 191355100,
+            "encode_mpps": 47.913078376929874,
+            "decode_mpps": 119.9738548907241
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 22382686,
+            "encode_ns": 1261963200,
+            "decode_ns": 488663900,
+            "encode_mpps": 18.19197976612947,
+            "decode_mpps": 46.980366259918114
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 51088113,
+            "encode_ns": 618192300,
+            "decode_ns": 224427800,
+            "encode_mpps": 37.13667899131063,
+            "decode_mpps": 102.29396269089658
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 27863714,
+            "encode_ns": 424569700,
+            "decode_ns": 211871000,
+            "encode_mpps": 54.07265049766858,
+            "decode_mpps": 108.35654242439975
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 23400608,
+            "encode_ns": 668943100,
+            "decode_ns": 434148600,
+            "encode_mpps": 34.319225357134265,
+            "decode_mpps": 52.87961080606963
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 23738265,
+            "encode_ns": 114328600,
+            "decode_ns": 106249900,
+            "encode_mpps": 200.80372715138645,
+            "decode_mpps": 216.07181747935763
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 22957609,
+            "bytes": 21858780,
+            "encode_ns": 16456279300,
+            "decode_ns": 2565606900,
+            "encode_mpps": 1.3950668058970048,
+            "decode_mpps": 8.948217671226251
+          }
+        },
+        "tecnick-photos": {
+          "lite": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 154257394,
+            "encode_ns": 1618521500,
+            "decode_ns": 773496300,
+            "encode_mpps": 88.9700878239801,
+            "decode_mpps": 186.16766492612828
+          },
+          "lite-sse42": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 154257394,
+            "encode_ns": 1782217100,
+            "decode_ns": 992235100,
+            "encode_mpps": 80.79823720690369,
+            "decode_mpps": 145.1268958334572
+          },
+          "lite-scalar": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 154257394,
+            "encode_ns": 6563641700,
+            "decode_ns": 3317418200,
+            "encode_mpps": 21.939040334879948,
+            "decode_mpps": 43.40724964974268
+          },
+          "png1": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 326129603,
+            "encode_ns": 4025298200,
+            "decode_ns": 1518951200,
+            "encode_mpps": 35.77374714747842,
+            "decode_mpps": 94.8022556616697
+          },
+          "htj2k6": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 183572019,
+            "encode_ns": 2563309300,
+            "decode_ns": 1129431200,
+            "encode_mpps": 56.17737976450989,
+            "decode_mpps": 127.4978059752555
+          },
+          "fnbli": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 155076586,
+            "encode_ns": 4171304700,
+            "decode_ns": 2651946300,
+            "encode_mpps": 34.52157307041128,
+            "decode_mpps": 54.29974204228796
+          },
+          "l1c0": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 162676953,
+            "encode_ns": 724356600,
+            "decode_ns": 692633800,
+            "encode_mpps": 198.79711180929394,
+            "decode_mpps": 207.902068885463
+          },
+          "jxl7": {
+            "images": 100,
+            "pixels": 144000000,
+            "bytes": 154171586,
+            "encode_ns": 96631053400,
+            "decode_ns": 15450207600,
+            "encode_mpps": 1.4902041831616832,
+            "decode_mpps": 9.320263114134466
+          }
+        }
+      },
+      "sources": {
+        "rgb-results.jsonl": {
+          "sha256": "3f4cdefd66a1c7b77c033213d45c32f93e6cbb51cb77d6d91b4707ec399b8e50",
+          "codecs": [
+            "lite",
+            "lite-sse42",
+            "lite-scalar"
+          ]
+        },
+        "memory-rgb2400-selected-fast.jsonl": {
+          "sha256": "f88c1aaecffdb2e7df2e5db110ee209c4fec0db3d1925e700f72d5e2c57c4749",
+          "codecs": [
+            "png1",
+            "htj2k6",
+            "fnbli",
+            "l1c0"
+          ]
+        },
+        "memory-rgb2400-jxl7.jsonl": {
+          "sha256": "1a41f750fdba9ecf41b97d4fa16b00266f8e81548eb90a1d0b0bbcf3b968075a",
+          "codecs": [
+            "jxl7"
+          ]
+        }
+      }
+    }
+  }
+}

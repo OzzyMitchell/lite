@@ -1,0 +1,23 @@
+{
+  "version": 5,
+  "configurePresets": [
+    {
+      "name": "windows-x64",
+      "displayName": "Windows x64",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/native-windows-x64",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_LINKER": "lld-link",
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "windows-x64",
+      "configurePreset": "windows-x64",
+      "jobs": 1
+    }
+  ]
+}
