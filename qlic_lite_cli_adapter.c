@@ -197,6 +197,12 @@ static void command_limits(QlicLiteLimits *limits)
     limits->file_bytes = 1u << 27;
 }
 
+static void command_encode_limits(QlicLiteLimits *limits)
+{
+    command_limits(limits);
+    limits->allocation_requests = 32768;
+}
+
 static uint8_t *read_file(const PathChar *path, size_t minimum, size_t maximum, size_t *bytes)
 {
     FILE *file = open_path(path, PATH_TEXT("rb"));
@@ -2278,7 +2284,7 @@ static WriteStatus pack_image(const PathChar *source, const PathChar *target, Im
 {
     if (!import) return FILE_FAILED;
     QlicLiteLimits limits;
-    command_limits(&limits);
+    command_encode_limits(&limits);
     size_t bytes = 0;
     uint8_t *data = read_file(source, 1, limits.input_bytes, &bytes);
     if (!data) return FILE_FAILED;
@@ -2499,7 +2505,7 @@ static int batch_pack(const PathChar *folder)
 static int pack(const PathChar *source, const PathChar *target, unsigned w, unsigned h)
 {
     QlicLiteLimits limits;
-    command_limits(&limits);
+    command_encode_limits(&limits);
     size_t stride = 4 * (size_t)w, expected = stride * h, bytes = 0;
     uint8_t *raw = read_file(source, expected, expected, &bytes);
     if (!raw) return 0;

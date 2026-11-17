@@ -231,46 +231,49 @@ static void record_failure(AllocationContext *context, QlicLiteStatus status)
     if (context->failure == QLIC_LITE_OK) context->failure = status;
 }
 
-QLI_NOINLINE void *qli_malloc(size_t bytes)
+static void *allocate_block(AllocationContext *context, size_t bytes)
 {
-    AllocationContext *context = active_allocations;
-    if (!context || context->failure != QLIC_LITE_OK) return NULL;
-    if (context->stats.requests == SIZE_MAX) {
-        ++context->stats.limit_denials;
-        record_failure(context, QLIC_LITE_LIMIT);
-        return NULL;
-    }
-
-    ++context->stats.requests;
-    size_t actual = bytes ? bytes : 1;
-    if (context->stats.requests > context->limits.allocation_requests ||
-        context->live_blocks == ALLOCATION_SLOTS ||
-        actual > context->limits.heap_bytes - context->live_bytes) {
-        ++context->stats.limit_denials;
-        record_failure(context, QLIC_LITE_LIMIT);
-        return NULL;
-    }
-
     ++context->stats.allocator_calls;
-    void *block = context->allocator.allocate(actual, context->allocator.user);
+    void *block = context->allocator.allocate(bytes, context->allocator.user);
     if (!block) {
         ++context->stats.allocator_failures;
         record_failure(context, QLIC_LITE_ALLOCATOR);
         return NULL;
     }
 
-    context->slots[context->live_blocks++] = (AllocationSlot){block, actual};
-    context->live_bytes += actual;
+    context->live_bytes += bytes;
     if (context->live_bytes > context->stats.peak_bytes)
         context->stats.peak_bytes = context->live_bytes;
     return block;
 }
 
-static unsigned find_allocation(const AllocationContext *context, const void *block)
+
+QLI_NOINLINE void *qli_malloc(size_t bytes)
 {
-    for (unsigned i = 0; i < context->live_blocks; ++i)
+    AllocationContext *context = active_allocations;
+    if (!context || context->failure != QLIC_LITE_OK) return NULL;
+    if (context->stats.requests == SIZE_MAX) goto limited;
+
+    ++context->stats.requests;
+    size_t actual = bytes ? bytes : 1;
+    if (context->stats.requests > context->limits.allocation_requests ||
+        actual > context->limits.heap_bytes - context->live_bytes) goto limited;
+    if (context->live_blocks == ALLOCATION_SLOTS) goto limited;
+    void *block = allocate_block(context, actual);
+    if (block) context->slots[context->live_blocks++] = (AllocationSlot){block, actual};
+    return block;
+
+limited:
+    ++context->stats.limit_denials;
+    record_failure(context, QLIC_LITE_LIMIT);
+    return NULL;
+}
+
+static size_t find_allocation(const AllocationContext *context, const void *block)
+{
+    for (size_t i = 0; i < context->live_blocks; ++i)
         if (context->slots[i].pointer == block) return i;
-    return ALLOCATION_SLOTS;
+    return context->live_blocks;
 }
 
 void qli_free(void *block)
@@ -278,8 +281,8 @@ void qli_free(void *block)
     if (!block) return;
     AllocationContext *context = active_allocations;
     if (!context) return;
-    unsigned i = find_allocation(context, block);
-    if (i == ALLOCATION_SLOTS) {
+    size_t i = find_allocation(context, block);
+    if (i == context->live_blocks) {
         ++context->stats.internal_errors;
         record_failure(context, QLIC_LITE_INTERNAL);
         return;
@@ -337,7 +340,7 @@ static QlicLiteStatus finish_allocations(AllocationContext *context, QlicLiteSta
             ++context->stats.internal_errors;
             status = QLIC_LITE_INTERNAL;
         } else {
-            context->stats.retained_bytes = context->live_bytes;
+            context->stats.retained_bytes = context->slots[0].bytes;
             context->live_blocks = 0;
             context->live_bytes = 0;
         }
