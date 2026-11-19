@@ -291,6 +291,20 @@ typedef struct {
 
 static _Thread_local AllocationContext *active_allocations;
 
+static _Thread_local int heap_limit_hit;
+
+#if defined(QLIC_LITE_BUILD_SHARED) && defined(_WIN32)
+__declspec(dllexport)
+#elif defined(QLIC_LITE_BUILD_SHARED) && (defined(__GNUC__) || defined(__clang__))
+__attribute__((visibility("default")))
+#endif
+int qli_take_heap_limit(void)
+{
+    int hit = heap_limit_hit;
+    heap_limit_hit = 0;
+    return hit;
+}
+
 static void *ordinary_allocate(size_t bytes, void *user)
 {
     (void)user;
@@ -334,7 +348,10 @@ static QLI_NOINLINE int grow_slots(AllocationContext *context, size_t pending)
     size_t capacity = context->slot_capacity * 2;
     if (capacity > max_slots) capacity = max_slots;
     size_t bytes = capacity * sizeof(AllocationSlot);
-    if (bytes > context->limits.heap_bytes - context->live_bytes - pending) return 0;
+    if (bytes > context->limits.heap_bytes - context->live_bytes - pending) {
+        heap_limit_hit = 1;
+        return 0;
+    }
 
     ++context->stats.requests;
     AllocationSlot *slots = allocate_block(context, bytes);
@@ -369,6 +386,8 @@ QLI_NOINLINE void *qli_malloc(size_t bytes)
     return block;
 
 limited:
+    if (context->stats.requests < SIZE_MAX && context->stats.requests <= context->limits.allocation_requests &&
+        (bytes ? bytes : 1) > context->limits.heap_bytes - context->live_bytes) heap_limit_hit = 1;
     ++context->stats.limit_denials;
     record_failure(context, QLIC_LITE_LIMIT);
     return NULL;
@@ -11192,6 +11211,7 @@ QlicLiteStatus qlic_lite_encode(const QlicLiteDescription *description,
             if (peak_bytes) *peak_bytes = peak;
             return QLIC_LITE_OK;
         }
+        if (file->data) heap_limit_hit = 0;
         qlic_lite_file_free(file);
         return QLIC_LITE_LIMIT;
     }
@@ -11213,7 +11233,11 @@ static inline void *qli_writer_allocate(QliWriterMemory *memory, size_t size)
     if (memory->allocator)
         return memory->allocator->allocate(size ? size : 1, memory->allocator->user);
     PaletteStats *stats = &memory->stats;
-    if (++stats->calls == memory->fail_at || size > memory->cap - stats->live) return NULL;
+    if (++stats->calls == memory->fail_at) return NULL;
+    if (size > memory->cap - stats->live) {
+        heap_limit_hit = 1;
+        return NULL;
+    }
     void *data = malloc(size ? size : 1);
     if (data) {
         stats->live += size;
@@ -18862,7 +18886,11 @@ static int encode_color(const uint8_t *rgba,size_t length,unsigned w,unsigned h,
     size_t bound=writer_bound(&s,n,w,h,file_cap,&cap,&work,&slots);
     size_t maps=(s.tiles+1)/2, modes=(s.modes+1)/2;
     if (maps<modes) maps=modes;
-    if (bound > budget->cap || !prepare_wave_log()) return 0;
+    if (bound > budget->cap) {
+        heap_limit_hit = 1;
+        return 0;
+    }
+    if (!prepare_wave_log()) return 0;
     uint32_t score[3];
     const unsigned basis=channels==3 && n>=16384 ? score_rgb_color(rgba,w,h) :
         score_color(rgba,w,h,score,channels);
@@ -21459,6 +21487,8 @@ typedef char PathChar;
 #define open_path fopen
 #endif
 
+int qli_take_heap_limit(void);
+
 static void command_limits(QlicLiteLimits *limits, size_t heap_bytes)
 {
     qlic_lite_limits_default(limits);
@@ -21505,14 +21535,47 @@ static int finish_file(FILE *file, const PathChar *path, int ok)
     return ok;
 }
 
-typedef enum { FILE_FAILED, FILE_WRITTEN, FILE_EXISTS } WriteStatus;
+typedef enum {
+    FILE_FAILED, FILE_WRITTEN, FILE_EXISTS, FILE_INPUT, FILE_IMAGE, FILE_OUTPUT, FILE_HEAP_LIMIT
+} WriteStatus;
+
+static const char *file_error(WriteStatus status, int unpacking)
+{
+    switch (status) {
+    case FILE_HEAP_LIMIT: return "Heap limit was reached.";
+    case FILE_INPUT: return "Couldn't read the input file.";
+    case FILE_IMAGE: return "The input image is invalid or uses an unsupported format.";
+    case FILE_EXISTS: return "The output file already exists.";
+    case FILE_OUTPUT: return "Couldn't write the output file.";
+    default: return unpacking ? "Couldn't unpack the image." : "Couldn't pack the image.";
+    }
+}
 
 static WriteStatus write_new_file(const PathChar *path, const uint8_t *data, size_t bytes)
 {
     FILE *file = open_path(path, PATH_TEXT("wbx"));
-    if (!file) return errno == EEXIST ? FILE_EXISTS : FILE_FAILED;
+    if (!file) return errno == EEXIST ? FILE_EXISTS : FILE_OUTPUT;
     int ok = fwrite(data, 1, bytes, file) == bytes;
-    return finish_file(file,path,ok) ? FILE_WRITTEN : FILE_FAILED;
+    return finish_file(file,path,ok) ? FILE_WRITTEN : FILE_OUTPUT;
+}
+
+static WriteStatus codec_error(QlicLiteStatus status)
+{
+    if (status == QLIC_LITE_LIMIT && qli_take_heap_limit()) return FILE_HEAP_LIMIT;
+    return status == QLIC_LITE_INVALID ? FILE_IMAGE : FILE_FAILED;
+}
+
+static WriteStatus encode_to_file(const PathChar *target, const QlicLiteDescription *description,
+                                 const uint8_t *pixels, size_t bytes, size_t stride,
+                                 const QlicLiteLimits *limits)
+{
+    QlicLiteFile file = {0};
+    qli_take_heap_limit();
+    QlicLiteStatus status = qlic_lite_encode(description, pixels, bytes, stride, limits, &file, NULL);
+    WriteStatus result = status == QLIC_LITE_OK ? write_new_file(target, file.data, file.bytes)
+                                                : codec_error(status);
+    qlic_lite_file_free(&file);
+    return result;
 }
 
 static size_t cli_decimal(const PathChar **text)
@@ -21990,7 +22053,7 @@ typedef struct {
     uint8_t *samples;
     size_t bytes, stride;
     uint8_t *icc;
-    int source_compression;
+    int source_compression, heap_limit_hit;
 } CliImage;
 
 static int import_layout(CliImage *image, uint32_t w, uint32_t h, uint32_t bits,
@@ -22239,14 +22302,17 @@ static int import_webp(CliImage *image, const uint8_t *data, size_t size,
         : WebPDecodeRGBInto(data, size, image->samples, image->bytes, (int)image->stride)) != NULL;
 }
 
-typedef struct { size_t used, cap; } CliJxlMemory;
+typedef struct { size_t used, cap; int limit_hit; } CliJxlMemory;
 typedef union { size_t bytes; max_align_t alignment; } CliJxlAllocation;
 
 static void *cli_jxl_alloc(void *opaque, size_t size)
 {
     CliJxlMemory *memory = opaque;
     if (size > memory->cap - memory->used ||
-        sizeof(CliJxlAllocation) > memory->cap - memory->used - size) return NULL;
+        sizeof(CliJxlAllocation) > memory->cap - memory->used - size) {
+        memory->limit_hit = 1;
+        return NULL;
+    }
     size += sizeof(CliJxlAllocation);
     CliJxlAllocation *block = malloc(size);
     if (!block) return NULL;
@@ -22267,10 +22333,13 @@ static void cli_jxl_free(void *opaque, void *pointer)
 static int import_jxl(CliImage *image, const uint8_t *data, size_t size,
                       const QlicLiteLimits *limits)
 {
-    CliJxlMemory memory = {0, limits->heap_bytes};
+    CliJxlMemory memory = {.cap = limits->heap_bytes};
     JxlMemoryManager manager = {&memory, cli_jxl_alloc, cli_jxl_free};
     JxlDecoder *decoder = JxlDecoderCreate(&manager);
-    if (!decoder) return 0;
+    if (!decoder) {
+        image->heap_limit_hit = memory.limit_hit;
+        return 0;
+    }
     JxlPixelFormat format = {0, JXL_TYPE_UINT8, JXL_LITTLE_ENDIAN, 0};
     JxlBasicInfo info;
     int ok = JxlDecoderSubscribeEvents(decoder, JXL_DEC_BASIC_INFO | JXL_DEC_COLOR_ENCODING |
@@ -22330,6 +22399,7 @@ static int import_jxl(CliImage *image, const uint8_t *data, size_t size,
         }
     }
     JxlDecoderDestroy(decoder);
+    image->heap_limit_hit = memory.limit_hit;
     return ok;
 }
 
@@ -23629,33 +23699,31 @@ static ImageImporter *image_importer(CliFormat format)
 static WriteStatus pack_image(const PathChar *source, const PathChar *target, ImageImporter *import,
                               const QlicLiteLimits *limits, int *source_compression)
 {
-    if (!import) return FILE_FAILED;
+    if (!import) return FILE_IMAGE;
     size_t bytes = 0;
     uint8_t *data = read_file(source, 1, limits->input_bytes, &bytes);
-    if (!data) return FILE_FAILED;
+    if (!data) return FILE_INPUT;
     CliImage image = {0};
     int ok = import(&image, data, bytes, limits);
     free(data);
-    QlicLiteFile file = {0};
-    ok = ok && qlic_lite_encode(&image.description, image.samples, image.bytes,
-                              image.stride, limits, &file, NULL) == QLIC_LITE_OK;
+    WriteStatus status = ok ? encode_to_file(target, &image.description, image.samples,
+                                            image.bytes, image.stride, limits)
+                            : image.heap_limit_hit ? FILE_HEAP_LIMIT : FILE_IMAGE;
     free(image.samples);
     free(image.icc);
-    WriteStatus status = ok ? write_new_file(target, file.data, file.bytes) : FILE_FAILED;
-    qlic_lite_file_free(&file);
     *source_compression = image.source_compression;
     return status;
 }
 
-static int write_decoded_image(const PathChar *target, const QlicLiteImage *image)
+static WriteStatus write_decoded_image(const PathChar *target, const QlicLiteImage *image)
 {
     CliFormat format = image_format(extension(target));
     const QlicLiteDescription *d = &image->description;
     if (format == FORMAT_RAW) {
-        int ok = write_new_file(target, image->samples, image->bytes) == FILE_WRITTEN;
-        if (ok && (d->icc_size || d->has_cicp || d->has_mastering || d->has_light))
+        WriteStatus status = write_new_file(target, image->samples, image->bytes);
+        if (status == FILE_WRITTEN && (d->icc_size || d->has_cicp || d->has_mastering || d->has_light))
             fputs("Warning: raw output contains samples only. Color and HDR tags are omitted.\n", stderr);
-        return ok;
+        return status;
     }
 
     int png = format == FORMAT_PNG;
@@ -23663,9 +23731,9 @@ static int write_decoded_image(const PathChar *target, const QlicLiteImage *imag
     int tcom = format == FORMAT_TCOM;
     int tiff = format == FORMAT_TIFF;
     int pnm = format >= FORMAT_PNM && format <= FORMAT_PPM;
-    if (!png && !bmp && !tiff && !pnm && !tcom) return 0;
+    if (!png && !bmp && !tiff && !pnm && !tcom) return FILE_OUTPUT;
     FILE *file = open_path(target, PATH_TEXT("w+bx"));
-    if (!file) return 0;
+    if (!file) return errno == EEXIST ? FILE_EXISTS : FILE_OUTPUT;
     int ok = png ? export_png(file, image) : bmp ? export_bmp(file, image) :
              tiff ? export_tiff(file, image) : tcom ? export_tcom(file, image) :
              export_pnm(file, image, format);
@@ -23675,7 +23743,7 @@ static int write_decoded_image(const PathChar *target, const QlicLiteImage *imag
                (png && ((d->has_mastering && !d->has_cicp) ||
                         d->authority == QLIC_LITE_COLOR_ICC_PREFERRED))))
         fputs("Warning: some color or HDR information is omitted in this output format.\n", stderr);
-    return ok;
+    return ok ? FILE_WRITTEN : FILE_OUTPUT;
 }
 
 typedef struct {
@@ -23995,7 +24063,7 @@ static int batch_pack(const PathChar *folder, const CliOptions *options)
             batch_notice("Skipped existing output for", image->name);
         } else {
             ++failed;
-            batch_notice("Could not pack", image->name);
+            batch_notice(file_error(image->result, 0), image->name);
         }
         free(image->target);
         free(image->source);
@@ -24009,43 +24077,42 @@ static int batch_pack(const PathChar *folder, const CliOptions *options)
 }
 #endif
 
-static int pack(const PathChar *source, const PathChar *target, unsigned w, unsigned h, size_t heap_bytes)
+static WriteStatus pack(const PathChar *source, const PathChar *target, unsigned w, unsigned h, size_t heap_bytes)
 {
     QlicLiteLimits limits;
     command_encode_limits(&limits, heap_bytes);
     size_t stride = 4 * (size_t)w, expected = stride * h, bytes = 0;
     uint8_t *raw = read_file(source, expected, expected, &bytes);
-    if (!raw) return 0;
+    if (!raw) return FILE_INPUT;
     QlicLiteDescription description = {
         .width = w, .height = h, .bits = 8, .channels = 4, .alpha = QLIC_LITE_ALPHA_STRAIGHT
     };
-    QlicLiteFile file = {0};
-    int ok = qlic_lite_encode(&description, raw, bytes, stride, &limits, &file, NULL) ==
-             QLIC_LITE_OK && write_new_file(target, file.data, file.bytes) == FILE_WRITTEN;
-    qlic_lite_file_free(&file);
+    WriteStatus result = encode_to_file(target, &description, raw, bytes, stride, &limits);
     free(raw);
-    return ok;
+    return result;
 }
 
-static int unpack(const PathChar *source, const PathChar *target, size_t heap_bytes)
+static WriteStatus unpack(const PathChar *source, const PathChar *target, size_t heap_bytes)
 {
     QlicLiteLimits limits;
     command_limits(&limits, heap_bytes);
     size_t bytes = 0;
     uint8_t *file = read_file(source, 1, limits.input_bytes, &bytes);
-    if (!file) return 0;
+    if (!file) return FILE_INPUT;
     QlicLiteImage image = {0};
-    int ok = qlic_lite_decode(file, bytes, &limits, NULL, &image, NULL) == QLIC_LITE_OK;
-    if (ok) {
+    qli_take_heap_limit();
+    QlicLiteStatus status = qlic_lite_decode(file, bytes, &limits, NULL, &image, NULL);
+    WriteStatus result;
+    if (status == QLIC_LITE_OK) {
 #ifdef QLIC_LITE_IMAGE_IO
-        ok = write_decoded_image(target, &image);
+        result = write_decoded_image(target, &image);
 #else
-        ok = write_new_file(target, image.samples, image.bytes) == FILE_WRITTEN;
+        result = write_new_file(target, image.samples, image.bytes);
 #endif
-    }
+    } else result = codec_error(status);
     qlic_lite_image_free(&image);
     free(file);
-    return ok;
+    return result;
 }
 
 static void usage(FILE *stream)
@@ -24098,16 +24165,18 @@ int cli_main(int argc, PathChar **argv)
         QlicLiteLimits limits;
         command_encode_limits(&limits, options.heap_bytes);
         int source_compression = SOURCE_LOSSLESS;
-        int ok = target && has_lite_extension(target) &&
-            pack_image(argv[2], target, image_importer(format), &limits, &source_compression) == FILE_WRITTEN;
-        free(generated);
-        if (ok) warn_source_compression(source_compression);
-        else {
-            fputs("Could not pack this image. Check the format, precision, and output path.\n", stderr);
-            if (format == FORMAT_RAW)
-                fputs("Raw input needs width and height.\n", stderr);
+        if (target && !has_lite_extension(target)) {
+            free(generated);
+            fputs("The output filename must end in .lite.\n", stderr);
+            return 1;
         }
-        return ok ? 0 : 1;
+        WriteStatus result = target
+            ? pack_image(argv[2], target, image_importer(format), &limits, &source_compression) : FILE_FAILED;
+        free(generated);
+        if (result == FILE_WRITTEN) warn_source_compression(source_compression);
+        else if (format == FORMAT_RAW) fputs("Raw input needs width and height.\n", stderr);
+        else fprintf(stderr, "%s\n", file_error(result, 0));
+        return result != FILE_WRITTEN;
     }
 #endif
     if ((argc == 5 || argc == 6) && path_compare(argv[1], PATH_TEXT("pack")) == 0) {
@@ -24120,14 +24189,15 @@ int cli_main(int argc, PathChar **argv)
                 fputs("The output filename must end in .lite.\n", stderr);
                 return 1;
             }
-            int ok = target && pack(argv[4], target, w, h, options.heap_bytes);
+            WriteStatus result = target ? pack(argv[4], target, w, h, options.heap_bytes) : FILE_FAILED;
             free(generated);
-            if (!ok) fputs("Could not pack the image. Check the input and output paths.\n", stderr);
-            return ok ? 0 : 1;
+            if (result != FILE_WRITTEN) fprintf(stderr, "%s\n", file_error(result, 0));
+            return result != FILE_WRITTEN;
         }
     } else if (argc == 4 && path_compare(argv[1], PATH_TEXT("unpack")) == 0) {
-        if (unpack(argv[2], argv[3], options.heap_bytes)) return 0;
-        fputs("Could not unpack the image. Check the input and output paths.\n", stderr);
+        WriteStatus result = unpack(argv[2], argv[3], options.heap_bytes);
+        if (result == FILE_WRITTEN) return 0;
+        fprintf(stderr, "%s\n", file_error(result, 1));
         return 1;
     }
     usage(stderr);

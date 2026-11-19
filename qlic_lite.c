@@ -264,6 +264,20 @@ typedef struct {
 
 static _Thread_local AllocationContext *active_allocations;
 
+static _Thread_local int heap_limit_hit;
+
+#if defined(QLIC_LITE_BUILD_SHARED) && defined(_WIN32)
+__declspec(dllexport)
+#elif defined(QLIC_LITE_BUILD_SHARED) && (defined(__GNUC__) || defined(__clang__))
+__attribute__((visibility("default")))
+#endif
+int qli_take_heap_limit(void)
+{
+    int hit = heap_limit_hit;
+    heap_limit_hit = 0;
+    return hit;
+}
+
 static void *ordinary_allocate(size_t bytes, void *user)
 {
     (void)user;
@@ -307,7 +321,10 @@ static QLI_NOINLINE int grow_slots(AllocationContext *context, size_t pending)
     size_t capacity = context->slot_capacity * 2;
     if (capacity > max_slots) capacity = max_slots;
     size_t bytes = capacity * sizeof(AllocationSlot);
-    if (bytes > context->limits.heap_bytes - context->live_bytes - pending) return 0;
+    if (bytes > context->limits.heap_bytes - context->live_bytes - pending) {
+        heap_limit_hit = 1;
+        return 0;
+    }
 
     ++context->stats.requests;
     AllocationSlot *slots = allocate_block(context, bytes);
@@ -342,6 +359,8 @@ QLI_NOINLINE void *qli_malloc(size_t bytes)
     return block;
 
 limited:
+    if (context->stats.requests < SIZE_MAX && context->stats.requests <= context->limits.allocation_requests &&
+        (bytes ? bytes : 1) > context->limits.heap_bytes - context->live_bytes) heap_limit_hit = 1;
     ++context->stats.limit_denials;
     record_failure(context, QLIC_LITE_LIMIT);
     return NULL;
@@ -11165,6 +11184,7 @@ QlicLiteStatus qlic_lite_encode(const QlicLiteDescription *description,
             if (peak_bytes) *peak_bytes = peak;
             return QLIC_LITE_OK;
         }
+        if (file->data) heap_limit_hit = 0;
         qlic_lite_file_free(file);
         return QLIC_LITE_LIMIT;
     }
@@ -11186,7 +11206,11 @@ static inline void *qli_writer_allocate(QliWriterMemory *memory, size_t size)
     if (memory->allocator)
         return memory->allocator->allocate(size ? size : 1, memory->allocator->user);
     PaletteStats *stats = &memory->stats;
-    if (++stats->calls == memory->fail_at || size > memory->cap - stats->live) return NULL;
+    if (++stats->calls == memory->fail_at) return NULL;
+    if (size > memory->cap - stats->live) {
+        heap_limit_hit = 1;
+        return NULL;
+    }
     void *data = malloc(size ? size : 1);
     if (data) {
         stats->live += size;
@@ -18835,7 +18859,11 @@ static int encode_color(const uint8_t *rgba,size_t length,unsigned w,unsigned h,
     size_t bound=writer_bound(&s,n,w,h,file_cap,&cap,&work,&slots);
     size_t maps=(s.tiles+1)/2, modes=(s.modes+1)/2;
     if (maps<modes) maps=modes;
-    if (bound > budget->cap || !prepare_wave_log()) return 0;
+    if (bound > budget->cap) {
+        heap_limit_hit = 1;
+        return 0;
+    }
+    if (!prepare_wave_log()) return 0;
     uint32_t score[3];
     const unsigned basis=channels==3 && n>=16384 ? score_rgb_color(rgba,w,h) :
         score_color(rgba,w,h,score,channels);
