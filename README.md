@@ -4,20 +4,38 @@ QLIC Lite is a lossless image codec built for a mix of fast decoding with good f
 
 ## CLI
 
-To use the CLI, you use `pack` and `unpack` like below.
+To use the CLI, there are 3 commands and 2 flags.
 
 ```text
-qlic_lite pack image.png
-qlic_lite unpack image.lite restored.png
+pack
+unpack
+batch
+--parallel
+--heap_limit
+```
+
+`pack` will encode an input into a .lite file.
+
+`unpack` will decode a .lite file into an output.
+
+`batch` will encode the images in a folder into .lite files. Output files will be beside the original files.
+
+`--parallel` allows multiple workers. If you set a number after it (like `--parallel=4`), it will use up to 4 workers. If you use `--parallel` on its own, it will use all logical CPUs if there are enough images for each worker.
+
+`--heap_limit` lets you set the heap limit for each image. By default, it's 1 GiB. There's no need to change this unless a particular image requires a lot more memory.
+
+```text
+qlic_lite pack image.ppm --heap_limit=512MiB
+qlic_lite batch "C:\Images"
+qlic_lite batch "C:\Images" --parallel
+qlic_lite batch "C:\Images" --parallel=4
 ```
 
 On windows, extract the zip and double click `qlic_lite.exe`, keep the included DLLs beside the exe, and when it asks for a folder, paste the folder path and press enter.
 
-Running `qlic_lite` on its own opens the same prompt, and you can also do the folder directly with `qlic_lite batch "path/to/folder"` which will save `.lite` files next to the images in said folder.
+QLIC Lite supports importing png, bmp, tiff, netpbm, tcom, bin, jpeg, webp, and jxl, it supports exporting png (effort 1), uncompressed bmp and tiff, netpbm, bin, and tcom. (TCOM exports are 8 bit only and omit HDR metadata.) Raw bin input needs width and height.
 
-QLIC Lite supports importing png, bmp, tiff, netpbm, tcom, bin, jpeg, webp, and jxl, it supports exporting png (effort 1), uncompressed bmp and tiff, netpbm, bin, and tcom. (TCOM does not support HDR, so it will not work with HDR images.)
-
-See [BUILDING.md](BUILDING.md) for the build commands and dependencies.
+See [BUILDING.md](https://github.com/OzzyMitchell/lite/blob/main/BUILDING.md) for the build commands and dependencies.
 
 ## Benchmarks
 

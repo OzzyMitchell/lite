@@ -67,9 +67,12 @@ unsigned qli_cpu_capabilities(void);
 #ifdef _WIN32
 #include <wchar.h>
 #ifdef QLIC_LITE_IMAGE_IO
+#include <process.h>
 #endif
 #elif defined(QLIC_LITE_IMAGE_IO)
 #include <dirent.h>
+#include <pthread.h>
+#include <strings.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #endif
@@ -77,6 +80,7 @@ unsigned qli_cpu_capabilities(void);
 #ifdef QLIC_LITE_IMAGE_IO
 #include <ctype.h>
 #include <setjmp.h>
+#include <stdatomic.h>
 #include <jxl/decode.h>
 #include <png.h>
 #include <tiffio.h>
@@ -21455,18 +21459,18 @@ typedef char PathChar;
 #define open_path fopen
 #endif
 
-static void command_limits(QlicLiteLimits *limits)
+static void command_limits(QlicLiteLimits *limits, size_t heap_bytes)
 {
     qlic_lite_limits_default(limits);
-    limits->heap_bytes = 1u << 28;
+    if (heap_bytes) limits->heap_bytes = heap_bytes;
     limits->input_bytes = 1u << 27;
     limits->pixel_data_bytes = 1u << 27;
     limits->file_bytes = 1u << 27;
 }
 
-static void command_encode_limits(QlicLiteLimits *limits)
+static void command_encode_limits(QlicLiteLimits *limits, size_t heap_bytes)
 {
-    command_limits(limits);
+    command_limits(limits, heap_bytes);
     limits->allocation_requests = 32768;
 }
 
@@ -21511,16 +21515,22 @@ static WriteStatus write_new_file(const PathChar *path, const uint8_t *data, siz
     return finish_file(file,path,ok) ? FILE_WRITTEN : FILE_FAILED;
 }
 
-static unsigned dimension(const PathChar *text)
+static size_t cli_decimal(const PathChar **text)
 {
-    if (!*text) return 0;
-    unsigned value = 0;
-    for (; *text; ++text) {
-        if (*text < '0' || *text > '9') return 0;
-        value = value * 10 + (unsigned)(*text - '0');
-        if (value > 16384) return 0;
+    size_t value = 0;
+    while (**text >= '0' && **text <= '9') {
+        unsigned digit = (unsigned)(**text - '0');
+        if (value > (SIZE_MAX - digit) / 10) return 0;
+        value = value * 10 + digit;
+        ++*text;
     }
     return value;
+}
+
+static unsigned dimension(const PathChar *text)
+{
+    size_t value = cli_decimal(&text);
+    return !*text && value <= 16384 ? (unsigned)value : 0;
 }
 
 static const PathChar *extension(const PathChar *path)
@@ -21550,6 +21560,75 @@ static int suffix_is(const PathChar *suffix, const PathChar *expected)
         if (c != *expected++) return 0;
     }
     return *suffix == *expected;
+}
+
+typedef struct {
+    size_t heap_bytes, batch_workers;
+    int parallel;
+} CliOptions;
+
+static size_t cli_heap_bytes(const PathChar *text)
+{
+    static const struct { const PathChar *name; size_t bytes; } units[] = {
+        {PATH_TEXT("b"), 1},
+        {PATH_TEXT("kb"), 1000}, {PATH_TEXT("kib"), 1024},
+        {PATH_TEXT("mb"), 1000000}, {PATH_TEXT("mib"), 1048576},
+        {PATH_TEXT("gb"), 1000000000}, {PATH_TEXT("gib"), 1073741824}
+    };
+    size_t value = cli_decimal(&text);
+    while (*text == ' ' || *text == '\t') ++text;
+    if (!*text) return value;
+    for (size_t i = 0; i < sizeof(units) / sizeof(*units); ++i)
+        if (suffix_is(text, units[i].name))
+            return value <= SIZE_MAX / units[i].bytes ? value * units[i].bytes : 0;
+    return 0;
+}
+
+static const PathChar *cli_option_value(const PathChar *arg, const PathChar *prefix)
+{
+    while (*prefix && *arg == *prefix) {
+        ++arg;
+        ++prefix;
+    }
+    return *prefix ? NULL : arg;
+}
+
+static int cli_read_options(int argc, PathChar **argv, CliOptions *options)
+{
+    int count = 1;
+    for (int i = 1; i < argc; ++i) {
+        const PathChar *arg = argv[i], *value;
+        if (path_compare(arg, PATH_TEXT("--")) == 0) {
+            while (++i < argc) argv[count++] = argv[i];
+            break;
+        }
+        if ((value = cli_option_value(arg, PATH_TEXT("--heap_limit=")))) {
+            if (options->heap_bytes || !(options->heap_bytes = cli_heap_bytes(value))) {
+                fputs("Use --heap_limit once with a positive size in B, KB, KiB, MB, MiB, GB or GiB.\n", stderr);
+                return 0;
+            }
+        } else if ((value = cli_option_value(arg, PATH_TEXT("--parallel"))) && (!*value || *value == '=')) {
+            int valid = !options->parallel;
+            if (valid && *value == '=') {
+                ++value;
+                options->batch_workers = cli_decimal(&value);
+                valid = options->batch_workers && !*value;
+            }
+            if (!valid) {
+                fputs("Use --parallel once, with an optional positive worker count such as --parallel=4.\n", stderr);
+                return 0;
+            }
+            options->parallel = 1;
+        } else if (arg[0] == '-' && arg[1] == '-' &&
+                   path_compare(arg, PATH_TEXT("--help")) && path_compare(arg, PATH_TEXT("--version"))) {
+            fputs("Unknown option. Use --help for the available options.\n", stderr);
+            return 0;
+        } else {
+            argv[count++] = argv[i];
+        }
+    }
+    argv[count] = NULL;
+    return count;
 }
 
 static const PathChar lite_suffix[] = PATH_TEXT(".lite");
@@ -23547,25 +23626,24 @@ static ImageImporter *image_importer(CliFormat format)
     }
 }
 
-static WriteStatus pack_image(const PathChar *source, const PathChar *target, ImageImporter *import)
+static WriteStatus pack_image(const PathChar *source, const PathChar *target, ImageImporter *import,
+                              const QlicLiteLimits *limits, int *source_compression)
 {
     if (!import) return FILE_FAILED;
-    QlicLiteLimits limits;
-    command_encode_limits(&limits);
     size_t bytes = 0;
-    uint8_t *data = read_file(source, 1, limits.input_bytes, &bytes);
+    uint8_t *data = read_file(source, 1, limits->input_bytes, &bytes);
     if (!data) return FILE_FAILED;
     CliImage image = {0};
-    int ok = import(&image, data, bytes, &limits);
+    int ok = import(&image, data, bytes, limits);
     free(data);
     QlicLiteFile file = {0};
     ok = ok && qlic_lite_encode(&image.description, image.samples, image.bytes,
-                              image.stride, &limits, &file, NULL) == QLIC_LITE_OK;
+                              image.stride, limits, &file, NULL) == QLIC_LITE_OK;
     free(image.samples);
     free(image.icc);
     WriteStatus status = ok ? write_new_file(target, file.data, file.bytes) : FILE_FAILED;
     qlic_lite_file_free(&file);
-    if (status == FILE_WRITTEN) warn_source_compression(image.source_compression);
+    *source_compression = image.source_compression;
     return status;
 }
 
@@ -23601,8 +23679,20 @@ static int write_decoded_image(const PathChar *target, const QlicLiteImage *imag
 }
 
 typedef struct {
-    size_t written, skipped, failed;
-} BatchCounts;
+    PathChar *source, *target;
+    const PathChar *name;
+    ImageImporter *import;
+    size_t order, end;
+    WriteStatus result;
+    int source_compression;
+} BatchImage;
+
+typedef struct {
+    BatchImage *images;
+    size_t count, capacity;
+    atomic_size_t next;
+    QlicLiteLimits limits;
+} Batch;
 
 static size_t batch_path_length(const PathChar *path)
 {
@@ -23678,42 +23768,55 @@ static void batch_notice(const char *message, const PathChar *path)
 #endif
 }
 
-static void batch_image(const PathChar *folder, const PathChar *name, BatchCounts *counts)
+static int batch_add(Batch *batch, const PathChar *folder, const PathChar *name)
 {
     ImageImporter *import = image_importer(image_format(extension(name)));
-    if (!import) return;
+    if (!import) return 1;
     PathChar *source = batch_join(folder, name);
+    if (!source) return 0;
 #ifndef _WIN32
     struct stat file_info;
-    if (source && stat(source, &file_info) == 0 && !S_ISREG(file_info.st_mode)) {
+    if (stat(source, &file_info) == 0 && !S_ISREG(file_info.st_mode)) {
         free(source);
-        return;
+        return 1;
     }
 #endif
-    PathChar *target = source ? default_output(source) : NULL;
-    WriteStatus result = FILE_FAILED;
-    if (target) {
-#ifdef _WIN32
-        const int exists = GetFileAttributesW(target) != INVALID_FILE_ATTRIBUTES;
-#else
-        struct stat target_info;
-        const int exists = stat(target, &target_info) == 0;
-#endif
-        result = exists ? FILE_EXISTS : pack_image(source, target, import);
+    PathChar *target = default_output(source);
+    if (!target) goto fail;
+    if (batch->count == batch->capacity) {
+        size_t capacity = batch->capacity ? 2 * batch->capacity : 32;
+        if (capacity <= batch->count || capacity > SIZE_MAX / sizeof(*batch->images)) goto fail;
+        BatchImage *images = realloc(batch->images, capacity * sizeof(*images));
+        if (!images) goto fail;
+        batch->images = images;
+        batch->capacity = capacity;
     }
-    if (result == FILE_WRITTEN) ++counts->written;
-    else if (result == FILE_EXISTS) {
-        ++counts->skipped;
-        batch_notice("Skipped existing output for", name);
-    } else {
-        ++counts->failed;
-        batch_notice("Could not pack", name);
-    }
+    size_t order = batch->count++;
+    batch->images[order] = (BatchImage){
+        .source = source, .target = target,
+        .name = source + batch_path_length(source) - batch_path_length(name),
+        .import = import, .order = order, .end = order + 1
+    };
+    return 1;
+fail:
     free(target);
     free(source);
+    return 0;
 }
 
-static int batch_scan(const PathChar *folder, BatchCounts *counts)
+static void batch_pack_image(BatchImage *image, const QlicLiteLimits *limits)
+{
+#ifdef _WIN32
+    const int exists = GetFileAttributesW(image->target) != INVALID_FILE_ATTRIBUTES;
+#else
+    struct stat target_info;
+    const int exists = stat(image->target, &target_info) == 0;
+#endif
+    image->result = exists ? FILE_EXISTS : pack_image(image->source, image->target,
+        image->import, limits, &image->source_compression);
+}
+
+static int batch_scan(const PathChar *folder, Batch *batch)
 {
 #ifdef _WIN32
     DWORD attributes = GetFileAttributesW(folder);
@@ -23725,30 +23828,145 @@ static int batch_scan(const PathChar *folder, BatchCounts *counts)
     const DWORD error = search == INVALID_HANDLE_VALUE ? GetLastError() : ERROR_SUCCESS;
     free(pattern);
     if (search == INVALID_HANDLE_VALUE) return error == ERROR_FILE_NOT_FOUND;
+    int complete = 1;
     do {
-        if (!(item.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
-            batch_image(folder, item.cFileName, counts);
+        if (!(item.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && !batch_add(batch, folder, item.cFileName)) {
+            complete = 0;
+            break;
+        }
     } while (FindNextFileW(search, &item));
-    const int complete = GetLastError() == ERROR_NO_MORE_FILES;
+    complete = complete && GetLastError() == ERROR_NO_MORE_FILES;
     FindClose(search);
     return complete;
 #else
     DIR *directory = opendir(folder);
     if (!directory) return 0;
-    struct dirent *item;
+    int complete = 1;
     for (;;) {
         errno = 0;
-        item = readdir(directory);
-        if (!item) break;
-        batch_image(folder, item->d_name, counts);
+        struct dirent *item = readdir(directory);
+        if (!item) {
+            complete = errno == 0;
+            break;
+        }
+        if (!batch_add(batch, folder, item->d_name)) {
+            complete = 0;
+            break;
+        }
     }
-    const int complete = errno == 0;
     closedir(directory);
     return complete;
 #endif
 }
 
-static int batch_pack(const PathChar *folder)
+static int batch_target_compare(const PathChar *left, const PathChar *right)
+{
+#ifdef _WIN32
+    return CompareStringOrdinal(left, -1, right, -1, TRUE) - CSTR_EQUAL;
+#else
+    return strcasecmp(left, right);
+#endif
+}
+
+static int batch_scan_order(const void *left, const void *right)
+{
+    size_t a = ((const BatchImage *)left)->order, b = ((const BatchImage *)right)->order;
+    return (a > b) - (a < b);
+}
+
+static int batch_target_order(const void *left, const void *right)
+{
+    const BatchImage *a = left, *b = right;
+    int order = batch_target_compare(a->target, b->target);
+    return order ? order : batch_scan_order(a, b);
+}
+
+static size_t batch_group_targets(Batch *batch)
+{
+    BatchImage *images = batch->images;
+    qsort(images, batch->count, sizeof(*images), batch_target_order);
+    size_t groups = 0;
+    for (size_t first = 0; first < batch->count; ++groups) {
+        size_t end = first + 1;
+        while (end < batch->count && batch_target_compare(images[first].target, images[end].target) == 0)
+            images[end++].end = 0;
+        images[first].end = end;
+        first = end;
+    }
+    return groups;
+}
+
+static void batch_work(Batch *batch)
+{
+    for (;;) {
+        size_t next = atomic_fetch_add_explicit(&batch->next, 1, memory_order_relaxed);
+        if (next >= batch->count) return;
+        size_t end = batch->images[next].end;
+        for (; next < end; ++next) batch_pack_image(&batch->images[next], &batch->limits);
+    }
+}
+
+#ifdef _WIN32
+typedef HANDLE BatchThread;
+static unsigned __stdcall batch_thread(void *opaque)
+{
+    batch_work(opaque);
+    return 0;
+}
+#else
+typedef pthread_t BatchThread;
+static void *batch_thread(void *opaque)
+{
+    batch_work(opaque);
+    return NULL;
+}
+#endif
+
+static size_t batch_cpu_count(void)
+{
+#ifdef _WIN32
+    DWORD count = GetActiveProcessorCount(ALL_PROCESSOR_GROUPS);
+#else
+    long count = sysconf(_SC_NPROCESSORS_ONLN);
+#endif
+    return count > 0 ? (size_t)count : 1;
+}
+
+static void batch_run(Batch *batch, size_t workers)
+{
+    if (workers > batch->count) workers = batch->count;
+    int grouped = workers > 1;
+    if (grouped) {
+        size_t groups = batch_group_targets(batch);
+        if (workers > groups) workers = groups;
+    }
+    size_t extra = workers > 1 ? workers - 1 : 0, started = 0;
+    BatchThread *threads = extra ? malloc(extra * sizeof(*threads)) : NULL;
+    if (threads) {
+        for (; started < extra; ++started) {
+#ifdef _WIN32
+            threads[started] = (HANDLE)_beginthreadex(NULL, 0, batch_thread, batch, 0, NULL);
+            if (!threads[started]) break;
+#else
+            if (pthread_create(&threads[started], NULL, batch_thread, batch)) break;
+#endif
+        }
+    }
+    if (started != extra) fputs("Could not start all batch threads. Continuing with the threads available.\n", stderr);
+    batch_work(batch);
+    for (size_t i = 0; i < started; ++i) {
+#ifdef _WIN32
+        WaitForSingleObject(threads[i], INFINITE);
+        CloseHandle(threads[i]);
+#else
+        pthread_join(threads[i], NULL);
+#endif
+    }
+    free(threads);
+    if (grouped) qsort(batch->images, batch->count, sizeof(*batch->images), batch_scan_order);
+}
+
+static int batch_pack(const PathChar *folder, const CliOptions *options)
 {
     PathChar input[32770];
     if (!folder) {
@@ -23758,21 +23976,43 @@ static int batch_pack(const PathChar *folder)
         }
         folder = input;
     }
-    BatchCounts counts = {0};
-    const int complete = *folder && batch_scan(folder, &counts);
+    Batch batch = {0};
+    atomic_init(&batch.next, 0);
+    command_encode_limits(&batch.limits, options->heap_bytes);
+    const int complete = *folder && batch_scan(folder, &batch);
     if (!complete) fputs("Could not scan the folder.\n", stderr);
-    if (complete && !counts.written && !counts.skipped && !counts.failed)
+    size_t workers = options->batch_workers;
+    if (!workers) workers = options->parallel ? batch_cpu_count() : 1;
+    batch_run(&batch, workers);
+    size_t written = 0, skipped = 0, failed = 0;
+    for (size_t i = 0; i < batch.count; ++i) {
+        BatchImage *image = &batch.images[i];
+        if (image->result == FILE_WRITTEN) {
+            ++written;
+            warn_source_compression(image->source_compression);
+        } else if (image->result == FILE_EXISTS) {
+            ++skipped;
+            batch_notice("Skipped existing output for", image->name);
+        } else {
+            ++failed;
+            batch_notice("Could not pack", image->name);
+        }
+        free(image->target);
+        free(image->source);
+    }
+    free(batch.images);
+    if (complete && !batch.count)
         puts("No supported images found.");
     else
-        printf("Packed %zu, skipped %zu, failed %zu.\n", counts.written, counts.skipped, counts.failed);
-    return !complete || counts.failed != 0;
+        printf("Packed %zu, skipped %zu, failed %zu.\n", written, skipped, failed);
+    return !complete || failed != 0;
 }
 #endif
 
-static int pack(const PathChar *source, const PathChar *target, unsigned w, unsigned h)
+static int pack(const PathChar *source, const PathChar *target, unsigned w, unsigned h, size_t heap_bytes)
 {
     QlicLiteLimits limits;
-    command_encode_limits(&limits);
+    command_encode_limits(&limits, heap_bytes);
     size_t stride = 4 * (size_t)w, expected = stride * h, bytes = 0;
     uint8_t *raw = read_file(source, expected, expected, &bytes);
     if (!raw) return 0;
@@ -23787,10 +24027,10 @@ static int pack(const PathChar *source, const PathChar *target, unsigned w, unsi
     return ok;
 }
 
-static int unpack(const PathChar *source, const PathChar *target)
+static int unpack(const PathChar *source, const PathChar *target, size_t heap_bytes)
 {
     QlicLiteLimits limits;
-    command_limits(&limits);
+    command_limits(&limits, heap_bytes);
     size_t bytes = 0;
     uint8_t *file = read_file(source, 1, limits.input_bytes, &bytes);
     if (!file) return 0;
@@ -23815,17 +24055,24 @@ static void usage(FILE *stream)
           "qlic_lite pack WIDTH HEIGHT INPUT.bin [OUTPUT.lite]\n"
           "qlic_lite unpack INPUT.lite OUTPUT\n"
           "qlic_lite                    Prompt for a folder to pack\n"
-          "qlic_lite batch [FOLDER]\n"
+          "qlic_lite batch [FOLDER] [--parallel[=N]]\n"
+          "  --parallel         Use all logical CPUs.\n"
+          "  --parallel=N       Use up to N workers.\n"
           "Input: PNG, WebP, JPEG, JXL, BMP, TIFF, TCOM, PNM/PBM/PGM/PPM/PAM, or raw RGBA8.\n"
           "Output: PNG, BMP, TIFF, TCOM, PNM/PBM/PGM/PPM/PAM, or raw BIN.\n", stream);
 #else
     fputs("qlic_lite pack WIDTH HEIGHT INPUT.rgba [OUTPUT.lite]\n"
           "qlic_lite unpack INPUT.lite OUTPUT.raw\n", stream);
 #endif
+    fputs("  --heap_limit=X     Set the per-image heap limit (default 1 GiB).\n"
+          "                     X is in bytes unless it ends in B, KB, KiB, MB, MiB, GB or GiB.\n", stream);
 }
 
 int cli_main(int argc, PathChar **argv)
 {
+    CliOptions options = {0};
+    argc = cli_read_options(argc, argv, &options);
+    if (!argc) return 2;
     if (argc == 2 && path_compare(argv[1], PATH_TEXT("--version")) == 0) {
         puts("QLIC Lite 1.0");
         return 0;
@@ -23835,17 +24082,27 @@ int cli_main(int argc, PathChar **argv)
         return 0;
     }
 #ifdef QLIC_LITE_IMAGE_IO
-    if (argc == 1) return batch_pack(NULL);
+    if (argc == 1) return batch_pack(NULL, &options);
     if ((argc == 2 || argc == 3) && path_compare(argv[1], PATH_TEXT("batch")) == 0)
-        return batch_pack(argc == 3 ? argv[2] : NULL);
+        return batch_pack(argc == 3 ? argv[2] : NULL, &options);
+#endif
+    if (options.parallel) {
+        fputs("--parallel requires batch mode.\n", stderr);
+        return 2;
+    }
+#ifdef QLIC_LITE_IMAGE_IO
     if ((argc == 3 || argc == 4) && path_compare(argv[1], PATH_TEXT("pack")) == 0) {
         PathChar *generated = argc == 3 ? default_output(argv[2]) : NULL;
         const PathChar *target = argc == 4 ? argv[3] : generated;
         CliFormat format = image_format(extension(argv[2]));
+        QlicLiteLimits limits;
+        command_encode_limits(&limits, options.heap_bytes);
+        int source_compression = SOURCE_LOSSLESS;
         int ok = target && has_lite_extension(target) &&
-            pack_image(argv[2], target, image_importer(format)) == FILE_WRITTEN;
+            pack_image(argv[2], target, image_importer(format), &limits, &source_compression) == FILE_WRITTEN;
         free(generated);
-        if (!ok) {
+        if (ok) warn_source_compression(source_compression);
+        else {
             fputs("Could not pack this image. Check the format, precision, and output path.\n", stderr);
             if (format == FORMAT_RAW)
                 fputs("Raw input needs width and height.\n", stderr);
@@ -23863,13 +24120,13 @@ int cli_main(int argc, PathChar **argv)
                 fputs("The output filename must end in .lite.\n", stderr);
                 return 1;
             }
-            int ok = target && pack(argv[4], target, w, h);
+            int ok = target && pack(argv[4], target, w, h, options.heap_bytes);
             free(generated);
             if (!ok) fputs("Could not pack the image. Check the input and output paths.\n", stderr);
             return ok ? 0 : 1;
         }
     } else if (argc == 4 && path_compare(argv[1], PATH_TEXT("unpack")) == 0) {
-        if (unpack(argv[2], argv[3])) return 0;
+        if (unpack(argv[2], argv[3], options.heap_bytes)) return 0;
         fputs("Could not unpack the image. Check the input and output paths.\n", stderr);
         return 1;
     }
